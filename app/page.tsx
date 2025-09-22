@@ -1,0 +1,362 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+
+import ActivityItem from './components/ActivityItem'
+import Button from './components/Button'
+import ButtonGroup from './components/ButtonGroup'
+import CounterControls from './components/CounterControls'
+import FormField from './components/FormField'
+import Modal from './components/Modal'
+import NumberInput from './components/NumberInput'
+import { PTOActivity } from './types/PTOActivity'
+import QuickSelect from './components/QuickSelect'
+import SaveConfiguration from './components/SaveConfiguration'
+import SprintCapacityOutput from './components/SprintCapacityOutput'
+import Toast from './components/Toast'
+import { useSprintConfiguration } from './hooks/useSprintConfiguration'
+
+export default function Home() {
+  const {
+    config,
+    updateConfig,
+    saveConfiguration,
+    loadConfiguration,
+    deleteConfiguration,
+    toast,
+    showToast,
+    hideToast
+  } = useSprintConfiguration()
+  
+  const [showWizard, setShowWizard] = useState<boolean>(false)
+  const [wizardData, setWizardData] = useState<{
+    name: string
+    developers: number
+    duration: number
+  }>({
+    name: '',
+    developers: 1,
+    duration: 1
+  })
+  
+  // Animation states for text inputs
+  const [teamMembersAnimating, setTeamMembersAnimating] = useState<boolean>(false)
+  const [sprintDaysAnimating, setSprintDaysAnimating] = useState<boolean>(false)
+  
+  // Animation effects
+  useEffect(() => {
+    setTeamMembersAnimating(true)
+    const timer = setTimeout(() => setTeamMembersAnimating(false), 200)
+    return () => clearTimeout(timer)
+  }, [config.teamMembers])
+  
+  useEffect(() => {
+    setSprintDaysAnimating(true)
+    const timer = setTimeout(() => setSprintDaysAnimating(false), 200)
+    return () => clearTimeout(timer)
+  }, [config.sprintDays])
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="w-full max-w-7xl mx-auto px-4 py-8 text-center">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent dark:from-blue-300 dark:to-gray-300 mb-6">
+            Sprint Capacity Calculator
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
+            Calculate your team's sprint capacity in real-time
+          </p>
+        </div>
+
+        {/* Calculator Form */}
+        <div className="max-w-full mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+            {/* Main Form */}
+            <div className="lg:col-span-3">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-4 sm:px-8 md:px-12 lg:px-16 pt-8 sm:pt-12 md:pt-16 pb-2">
+            {/* Team Members Input */}
+            <NumberInput
+              id="teamMembers"
+              label="Number of Team Members"
+              description="How many developers are working on this sprint? [1-15]"
+              value={config.teamMembers}
+              min={1}
+              max={15}
+              onChange={(value) => updateConfig({ teamMembers: value })}
+              animating={teamMembersAnimating}
+            />
+
+            {/* Sprint Days Input */}
+            <NumberInput
+              id="sprintDays"
+              label="Number of Sprint Days"
+              description="How many days is this sprint? [1-30]"
+              value={config.sprintDays}
+              min={1}
+              max={30}
+              onChange={(value) => updateConfig({ sprintDays: value })}
+              animating={sprintDaysAnimating}
+              bottomMargin="mb-4"
+            />
+            
+            {/* Quick Sprint Duration Buttons */}
+            <QuickSelect
+              title="Quick Select"
+              options={[
+                { value: 5, label: "5 Days", ariaLabel: "Set sprint duration to 5 (one week)" },
+                { value: 10, label: "10 Days", ariaLabel: "Set sprint duration to 10 (two weeks)" },
+                { value: 30, label: "30 Days", ariaLabel: "Set sprint duration to 30 (one month)" }
+              ]}
+              selectedValue={config.sprintDays}
+              onSelect={(value) => updateConfig({ sprintDays: value })}
+              showDuration={true}
+            />
+
+            {/* PTO and Activities Section */}
+            <div className="mb-12">
+              <label className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-2 text-center">
+                PTO & Activities
+              </label>
+              
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+                Add planned time off and activities that will affect team capacity
+              </p>
+              
+              {/* Add Entry Button */}
+              <Button
+                onClick={() => {
+                  setWizardData({
+                    name: '',
+                    developers: 1,
+                    duration: 1
+                  })
+                  setShowWizard(true)
+                }}
+                variant="secondary"
+                size="lg"
+                icon="plus"
+                fullWidth
+                className="h-16"
+              >
+                Add PTO or Activity
+              </Button>
+
+              {/* Activities List */}
+              {config.ptoActivities.length > 0 && (
+                <div className="mt-6 space-y-3">
+                  {config.ptoActivities.map((activity) => (
+                    <ActivityItem
+                      key={activity.id}
+                      activity={activity}
+                      onRemove={(id) => updateConfig({ 
+                        ptoActivities: config.ptoActivities.filter(item => item.id !== id) 
+                      })}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* On-Call Time Input */}
+            <ButtonGroup
+              label="On-Call Time"
+              description="How many days of on-call time during this sprint? [0-2]"
+              options={[
+                { value: 0, label: "0", ariaLabel: "Set on-call time to 0" },
+                { value: 1, label: "1", ariaLabel: "Set on-call time to 1" },
+                { value: 2, label: "2", ariaLabel: "Set on-call time to 2" }
+              ]}
+              selectedValue={config.onCallTime}
+              onSelect={(value) => updateConfig({ onCallTime: value })}
+            />
+              </div>
+            </div>
+
+            {/* Capacity Display Sidebar */}
+            <div className="lg:col-span-2">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6 lg:p-8 lg:sticky lg:top-8">
+                <h3 className="text-xl font-medium text-blue-900 dark:text-blue-100 mb-8 text-center">
+                  Current Configuration
+                </h3>
+                <div className="space-y-3">
+                  {config.teamMembers > 0 ? (
+                    <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Team Size</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.teamMembers} Member{config.teamMembers !== 1 ? 's' : ''}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Team Size</span>
+                      <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">Not set</span>
+                    </div>
+                  )}
+                  
+                  {config.sprintDays > 0 ? (
+                    <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Sprint Duration</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.sprintDays} Day{config.sprintDays !== 1 ? 's' : ''}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Sprint Duration</span>
+                      <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">Not set</span>
+                    </div>
+                  )}
+                  
+                  {config.ptoActivities.length > 0 ? (
+                    <div className="mt-4">
+                      <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300 mb-2">
+                        <span className="font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap text-left">PTO & Activities</span>
+                        <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.ptoActivities.length} Planned</span>
+                      </div>
+                      <div className="text-sm text-blue-600 dark:text-blue-300 space-y-1">
+                        {config.ptoActivities.map((activity) => (
+                          <p key={activity.id} className="text-left">
+                            {activity.name}: {activity.developers} dev{activity.developers !== 1 ? 's' : ''} × {activity.duration} Day{activity.duration !== 1 ? 's' : ''}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap text-left">PTO & Activities</span>
+                      <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">None</span>
+                    </div>
+                  )}
+                  
+                  {config.onCallTime > 0 ? (
+                    <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">On-Call Time</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.onCallTime} Day{config.onCallTime !== 1 ? 's' : ''}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">On-Call Time</span>
+                      <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">None</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Sprint Capacity Calculation */}
+              <SprintCapacityOutput 
+                teamMembers={config.teamMembers}
+                sprintDays={config.sprintDays}
+                ptoActivities={config.ptoActivities}
+                onCallTime={config.onCallTime}
+              />
+              
+              {/* Save Configuration */}
+              <SaveConfiguration
+                teamMembers={config.teamMembers}
+                sprintDays={config.sprintDays}
+                ptoActivities={config.ptoActivities}
+                onCallTime={config.onCallTime}
+                onShowToast={showToast}
+                onLoadConfiguration={loadConfiguration}
+                onDeleteConfiguration={deleteConfiguration}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Wizard Modal */}
+      <Modal
+        isOpen={showWizard}
+        onClose={() => setShowWizard(false)}
+        title="Add PTO or Activity"
+        titleSize="text-3xl"
+        titleCentered={true}
+      >
+        <div>
+          {/* Activity Name */}
+          <FormField label="Name">
+            <input
+              type="text"
+              value={wizardData.name}
+              onChange={(e) => setWizardData(prev => ({ ...prev, name: e.target.value }))}
+              placeholder="e.g., Team Retreat, Holiday, Training"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              autoFocus
+            />
+          </FormField>
+
+          {/* Number of Developers */}
+          <div className="mt-12">
+            <CounterControls
+              label="Number of Developers"
+              value={wizardData.developers}
+              min={1}
+              max={config.teamMembers}
+              onDecrease={() => setWizardData(prev => ({ ...prev, developers: Math.max(1, prev.developers - 1) }))}
+              onIncrease={() => setWizardData(prev => ({ ...prev, developers: Math.min(config.teamMembers, prev.developers + 1) }))}
+            />
+            <Button
+              onClick={() => setWizardData(prev => ({ ...prev, developers: config.teamMembers }))}
+              variant="secondary"
+              size="sm"
+              fullWidth
+              className="mt-6"
+            >
+              Select All Developers ({config.teamMembers})
+            </Button>
+          </div>
+
+          {/* Duration */}
+          <div className="mt-12">
+            <CounterControls
+              label="Duration in Sprint Days (0.5 Day Increments)"
+              value={wizardData.duration}
+              min={0.5}
+              max={config.sprintDays}
+              step={0.5}
+              onDecrease={() => setWizardData(prev => ({ ...prev, duration: Math.max(0.5, prev.duration - 0.5) }))}
+              onIncrease={() => setWizardData(prev => ({ ...prev, duration: Math.min(config.sprintDays, prev.duration + 0.5) }))}
+            />
+          </div>
+        </div>
+
+        {/* Modal Actions */}
+        <div className="flex gap-4 mt-8">
+          <Button
+            onClick={() => setShowWizard(false)}
+            variant="secondary"
+            size="md"
+            fullWidth
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              const newActivity: PTOActivity = {
+                id: Date.now().toString(),
+                name: wizardData.name.trim() || 'Untitled Activity',
+                developers: wizardData.developers,
+                duration: wizardData.duration
+              }
+              updateConfig({ 
+                ptoActivities: [...config.ptoActivities, newActivity] 
+              })
+              setShowWizard(false)
+            }}
+            variant="primary"
+            size="md"
+            fullWidth
+          >
+            Add Activity
+          </Button>
+        </div>
+      </Modal>
+
+      {/* Toast Notification */}
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+      />
+    </main>
+  )
+}
