@@ -30,7 +30,7 @@ export default function NumberInput({
   animating = false,
   lastAction: externalLastAction = null,
   placeholder = "0",
-  bottomMargin = "mb-12"
+  bottomMargin = "mb-8"
 }: NumberInputProps) {
   const [lastAction, setLastAction] = useState<'decrease' | 'increase' | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
@@ -92,7 +92,7 @@ export default function NumberInput({
       description={description}
       className={bottomMargin}
     >
-      <div className="flex items-center h-16 sm:h-20">
+      <div className="flex items-center h-12 sm:h-14">
         {/* Number Input */}
         <input
           type="number"
@@ -101,7 +101,7 @@ export default function NumberInput({
           max={max}
           value={value || ''}
           onChange={handleInputChange}
-          className={`flex-1 h-16 sm:h-20 px-2 sm:px-4 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-lg sm:text-xl mr-2 sm:mr-8 ${getAnimationClasses()}`}
+          className={`flex-1 h-12 sm:h-14 px-2 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-xl sm:text-2xl mr-2 sm:mr-4 ${getAnimationClasses()}`}
           placeholder={placeholder}
         />
 
@@ -110,7 +110,7 @@ export default function NumberInput({
           onClick={handleDecrease}
           disabled={value <= min}
           variant="secondary"
-          size="xl"
+          size="lg"
           icon="minus"
           className="flex-shrink-0 mr-1 sm:mr-2"
           ariaLabel={`Decrease ${label.toLowerCase()}`}
@@ -121,7 +121,7 @@ export default function NumberInput({
           onClick={handleIncrease}
           disabled={max !== undefined && value >= max}
           variant="secondary"
-          size="xl"
+          size="lg"
           icon="plus"
           className="flex-shrink-0 ml-1 sm:ml-2"
           ariaLabel={`Increase ${label.toLowerCase()}`}

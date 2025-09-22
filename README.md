@@ -9,9 +9,36 @@ A Next.js application for sprint planning and project management. Calculate your
 - **Real-time Sprint Capacity Calculation**: Input team size and sprint duration to get instant capacity calculations
 - **PTO & Activities Tracking**: Add planned time off and activities that affect team capacity
 - **On-Call Time Management**: Account for on-call responsibilities during sprints
+- **Rollover Points Tracking**: Account for unfinished work from previous sprints
 - **Configuration Saving**: Save and load sprint configurations for reuse
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Dark Mode Support**: Toggle between light and dark themes
+
+## Sprint Capacity Calculation
+
+The application calculates sprint capacity using the following formula:
+
+```
+Total Capacity = (Team Members × Sprint Days) - PTO Days - On-Call Days - Rollover Points
+```
+
+### Formula Breakdown
+
+- **Team Members × Sprint Days**: Base capacity assuming full availability
+- **PTO Days**: Total days lost due to planned time off and activities
+  - Calculated as: `Σ(Developers × Duration)` for each PTO activity
+- **On-Call Days**: Days spent on on-call responsibilities
+- **Rollover Points**: Story points from unfinished work in previous sprint
+
+### Example Calculation
+
+For a team of 5 developers in a 10-day sprint:
+- Base capacity: `5 × 10 = 50 points`
+- With 2 developers taking 1 day PTO each: `50 - 2 = 48 points`
+- With 1 day of on-call time: `48 - 1 = 47 points`
+- With 3 rollover points: `47 - 3 = 44 points`
+
+**Final capacity: 44 story points**
 
 ## Getting Started
 

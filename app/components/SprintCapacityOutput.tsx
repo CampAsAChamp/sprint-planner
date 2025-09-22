@@ -12,21 +12,23 @@ interface SprintCapacityProps {
     duration: number
   }>
   onCallTime: number
+  rolloverPoints: number
 }
 
 export default function SprintCapacityOutput({ 
   teamMembers, 
   sprintDays, 
   ptoActivities, 
-  onCallTime 
+  onCallTime,
+  rolloverPoints 
 }: SprintCapacityProps) {
   const [lastAction, setLastAction] = useState<'increase' | 'decrease' | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
   const [previousCapacity, setPreviousCapacity] = useState<number>(0)
   const calculateCapacity = () => {
-    // Basic calculation: team members * sprint days - PTO days - on-call days
+    // Basic calculation: team members * sprint days - PTO days - on-call days - rollover points
     const totalPtoDays = ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0);
-    const totalCapacity = (teamMembers * sprintDays) - totalPtoDays - onCallTime;
+    const totalCapacity = (teamMembers * sprintDays) - totalPtoDays - onCallTime - rolloverPoints;
     return Math.max(0, totalCapacity);
   };
 

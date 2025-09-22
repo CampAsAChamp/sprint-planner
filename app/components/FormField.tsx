@@ -14,7 +14,7 @@ export default function FormField({
   description,
   children,
   className = '',
-  labelSize = 'xl',
+  labelSize = 'lg',
   descriptionSize = 'sm'
 }: FormFieldProps) {
   const labelSizeClasses = {

@@ -19,10 +19,14 @@ import { useSprintConfiguration } from './hooks/useSprintConfiguration'
 export default function Home() {
   const {
     config,
+    configurations,
+    currentConfigId,
     updateConfig,
-    saveConfiguration,
-    loadConfiguration,
+    createConfiguration,
+    duplicateConfiguration,
+    updateConfigurationName,
     deleteConfiguration,
+    switchToConfiguration,
     toast,
     showToast,
     hideToast
@@ -45,6 +49,8 @@ export default function Home() {
   const [sprintDaysLastAction, setSprintDaysLastAction] = useState<'increase' | 'decrease' | null>(null)
   const [onCallTimeAnimating, setOnCallTimeAnimating] = useState<boolean>(false)
   const [onCallTimeLastAction, setOnCallTimeLastAction] = useState<'increase' | 'decrease' | null>(null)
+  const [rolloverPointsAnimating, setRolloverPointsAnimating] = useState<boolean>(false)
+  const [rolloverPointsLastAction, setRolloverPointsLastAction] = useState<'increase' | 'decrease' | null>(null)
   
   // Animation effects
   useEffect(() => {
@@ -71,6 +77,15 @@ export default function Home() {
     return () => clearTimeout(timer)
   }, [config.onCallTime])
 
+  useEffect(() => {
+    setRolloverPointsAnimating(true)
+    const timer = setTimeout(() => {
+      setRolloverPointsAnimating(false)
+      setRolloverPointsLastAction(null)
+    }, 200)
+    return () => clearTimeout(timer)
+  }, [config.rolloverPoints])
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="w-full max-w-7xl mx-auto px-4 py-8 text-center">
@@ -86,7 +101,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
             {/* Main Form */}
             <div className="lg:col-span-3">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-4 sm:px-8 md:px-12 lg:px-16 pt-8 sm:pt-12 md:pt-16 pb-2">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-4 sm:px-6 md:px-8 lg:px-10 pt-6 sm:pt-8 md:pt-10 pb-2">
             {/* Team Members Input */}
             <NumberInput
               id="teamMembers"
@@ -99,7 +114,7 @@ export default function Home() {
             />
 
             {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
+            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
 
             {/* Sprint Days Input */}
             <NumberInput
@@ -137,10 +152,47 @@ export default function Home() {
             />
 
             {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
+            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
+
+            {/* Rollover Points Input */}
+            <NumberInput
+              id="rolloverPoints"
+              label="Rollover Points from Previous Sprint"
+              description="How many story points are rolling over from the previous sprint?"
+              value={config.rolloverPoints}
+              min={0}
+              onChange={(value) => updateConfig({ rolloverPoints: value })}
+              animating={rolloverPointsAnimating}
+              lastAction={rolloverPointsLastAction}
+              bottomMargin="mb-4"
+            />
+            
+            {/* Quick Rollover Points Buttons */}
+            <QuickSelect
+              title="Quick Select"
+              options={[
+                { value: 0, label: "0 Points", ariaLabel: "Set rollover points to 0" },
+                { value: 2, label: "2 Points", ariaLabel: "Set rollover points to 2" },
+                { value: 3, label: "3 Points", ariaLabel: "Set rollover points to 3" }
+              ]}
+              selectedValue={config.rolloverPoints}
+              onSelect={(value) => updateConfig({ rolloverPoints: value })}
+              onAnimationTrigger={(action) => {
+                setRolloverPointsLastAction(action)
+                setRolloverPointsAnimating(true)
+                setTimeout(() => {
+                  setRolloverPointsAnimating(false)
+                  setRolloverPointsLastAction(null)
+                }, 200)
+              }}
+              showDuration={false}
+            />
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
 
             {/* PTO and Activities Section */}
-            <div className="mb-12">
+            <div className="mb-8">
               <label className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-2 text-center">
                 PTO & Activities
               </label>
@@ -163,7 +215,7 @@ export default function Home() {
                 size="lg"
                 icon="plus"
                 fullWidth
-                className="h-16"
+                className="h-12"
               >
                 Add PTO or Activity
               </Button>
@@ -185,7 +237,7 @@ export default function Home() {
             </div>
 
             {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
+            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
 
             {/* On-Call Time Input */}
             <NumberInput
@@ -221,12 +273,13 @@ export default function Home() {
               }}
               showDuration={false}
             />
+
               </div>
             </div>
 
             {/* Capacity Display Sidebar */}
             <div className="lg:col-span-2">
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6 lg:p-8 lg:sticky lg:top-8">
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6 lg:p-8">
                 <h3 className="text-xl font-medium text-blue-900 dark:text-blue-100 mb-8 text-center">
                   Current Configuration
                 </h3>
@@ -252,6 +305,18 @@ export default function Home() {
                     <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
                       <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Sprint Duration</span>
                       <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">Not set</span>
+                    </div>
+                  )}
+                  
+                  {config.rolloverPoints > 0 ? (
+                    <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Rollover Points</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.rolloverPoints} Point{getPluralSuffix(config.rolloverPoints)}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Rollover Points</span>
+                      <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">None</span>
                     </div>
                   )}
                   
@@ -296,17 +361,20 @@ export default function Home() {
                 sprintDays={config.sprintDays}
                 ptoActivities={config.ptoActivities}
                 onCallTime={config.onCallTime}
+                rolloverPoints={config.rolloverPoints}
               />
               
-              {/* Save Configuration */}
+              {/* Configuration Manager */}
               <SaveConfiguration
-                teamMembers={config.teamMembers}
-                sprintDays={config.sprintDays}
-                ptoActivities={config.ptoActivities}
-                onCallTime={config.onCallTime}
-                onShowToast={showToast}
-                onLoadConfiguration={loadConfiguration}
+                configurations={configurations}
+                currentConfigId={currentConfigId}
+                currentConfig={config}
+                onCreateConfiguration={createConfiguration}
+                onDuplicateConfiguration={duplicateConfiguration}
+                onUpdateConfigurationName={updateConfigurationName}
                 onDeleteConfiguration={deleteConfiguration}
+                onSwitchToConfiguration={switchToConfiguration}
+                onShowToast={showToast}
               />
             </div>
           </div>

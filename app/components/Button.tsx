@@ -94,11 +94,26 @@ export default function Button({
 
   const pressedClasses = getPressedClasses()
   
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-4 py-2 text-lg',
-    xl: 'w-20 h-20 text-xl'
+  const getSizeClasses = () => {
+    // For circular buttons (plus/minus icons) that are NOT fullWidth, use fixed dimensions
+    if ((icon === 'plus' || icon === 'minus') && size === 'lg' && !fullWidth) {
+      return 'w-12 h-12 text-base'
+    }
+    
+    // For circular buttons with xl size
+    if ((icon === 'plus' || icon === 'minus') && size === 'xl') {
+      return 'w-16 h-16 text-lg'
+    }
+    
+    // For regular buttons, use responsive sizing
+    const regularSizes = {
+      sm: 'px-3 py-1.5 text-sm',
+      md: 'px-4 py-2 text-base',
+      lg: 'px-4 py-2 text-base',
+      xl: 'w-20 h-20 text-xl'
+    }
+    
+    return regularSizes[size]
   }
   
   const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : ''
@@ -107,7 +122,7 @@ export default function Button({
   const classes = [
     baseClasses,
     variantClasses[variant],
-    sizeClasses[size],
+    getSizeClasses(),
     disabledClasses,
     widthClasses,
     className,

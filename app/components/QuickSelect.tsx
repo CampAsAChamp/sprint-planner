@@ -26,7 +26,7 @@ export default function QuickSelect({ title, options, selectedValue, onSelect, s
   }
 
   return (
-    <div className="mt-1 mb-12">
+    <div className="mt-1 mb-8">
       <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 text-center">
         {title}
       </p>
@@ -43,8 +43,8 @@ export default function QuickSelect({ title, options, selectedValue, onSelect, s
                 onSelect(option.value)
               }}
               variant={selectedValue === option.value ? 'primary' : 'secondary'}
-              size="xl"
-              className="h-16 sm:h-20 min-w-[160px] sm:min-w-[180px] rounded-full"
+              size="lg"
+              className="h-10 sm:h-12 min-w-[100px] sm:min-w-[120px] rounded-full"
               ariaLabel={option.ariaLabel}
             >
               {option.label}
