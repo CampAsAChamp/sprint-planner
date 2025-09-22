@@ -2,6 +2,8 @@
 
 A Next.js application for sprint planning and project management. Calculate your team's sprint capacity in real-time with PTO tracking and on-call time considerations.
 
+🌐 **Live Demo**: [https://campasachamp.github.io/sprint-planner/](https://campasachamp.github.io/sprint-planner/)
+
 ## Features
 
 - **Real-time Sprint Capacity Calculation**: Input team size and sprint duration to get instant capacity calculations
@@ -49,6 +51,8 @@ This project is configured for automatic deployment to GitHub Pages:
 3. **Automatic Deployment**: The GitHub Actions workflow will automatically build and deploy your app when you push to the `main` branch
 
 Your app will be available at: `https://yourusername.github.io/sprint-planner`
+
+**Live Site**: [https://campasachamp.github.io/sprint-planner/](https://campasachamp.github.io/sprint-planner/)
 
 ### Manual Build
 
