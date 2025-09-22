@@ -4,7 +4,7 @@ import Icon from './Icon'
 import { useState } from 'react'
 
 interface ButtonProps {
-  children: React.ReactNode
+  children?: React.ReactNode
   onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost'
@@ -99,7 +99,7 @@ export default function Button({
     >
       <div className="flex items-center justify-center gap-2">
         {icon && iconPosition === 'left' && iconElement}
-        {children}
+        {children && children}
         {icon && iconPosition === 'right' && iconElement}
       </div>
     </button>

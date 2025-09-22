@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { PTOActivity } from '../types/PTOActivity'
 
@@ -32,9 +32,9 @@ export function useSprintConfiguration() {
   })
   
   // Toast handlers
-  const showToast = (message: string, type: ToastState['type']) => {
+  const showToast = useCallback((message: string, type: ToastState['type']) => {
     setToast({ message, type, isVisible: true })
-  }
+  }, [])
 
   const hideToast = () => {
     setToast(prev => ({ ...prev, isVisible: false }))
@@ -63,7 +63,7 @@ export function useSprintConfiguration() {
     }
   }
 
-  const loadConfiguration = (showNotification = true) => {
+  const loadConfiguration = useCallback((showNotification = true) => {
     try {
       const savedConfig = localStorage.getItem('sprintCapacityConfig')
       if (savedConfig) {
@@ -92,7 +92,7 @@ export function useSprintConfiguration() {
       }
       return false
     }
-  }
+  }, [showToast])
 
   const deleteConfiguration = () => {
     try {
@@ -113,7 +113,7 @@ export function useSprintConfiguration() {
   // Auto-load configuration on mount
   useEffect(() => {
     loadConfiguration(false)
-  }, [])
+  }, [loadConfiguration])
 
   return {
     config,

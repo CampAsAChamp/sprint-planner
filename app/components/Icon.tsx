@@ -3,7 +3,7 @@
 interface IconProps {
   name: 'plus' | 'minus' | 'delete' | 'reload' | 'close' | 'check' | 'error' | 'save' | 'load' | 'trash'
   className?: string
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
 const iconMap = {
