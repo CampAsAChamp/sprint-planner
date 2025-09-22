@@ -92,7 +92,7 @@ export default function NumberInput({
       description={description}
       className={bottomMargin}
     >
-      <div className="flex items-center h-12 sm:h-14">
+      <div className="flex items-center h-12 sm:h-14 gap-1 sm:gap-2">
         {/* Number Input */}
         <input
           type="number"
@@ -101,7 +101,7 @@ export default function NumberInput({
           max={max}
           value={value || ''}
           onChange={handleInputChange}
-          className={`flex-1 h-12 sm:h-14 px-2 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-xl sm:text-2xl mr-2 sm:mr-4 ${getAnimationClasses()}`}
+          className={`flex-1 h-12 sm:h-14 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-base sm:text-lg md:text-xl lg:text-2xl ${getAnimationClasses()}`}
           placeholder={placeholder}
         />
 
@@ -110,9 +110,9 @@ export default function NumberInput({
           onClick={handleDecrease}
           disabled={value <= min}
           variant="secondary"
-          size="lg"
+          size="md"
           icon="minus"
-          className="flex-shrink-0 mr-1 sm:mr-2"
+          className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12"
           ariaLabel={`Decrease ${label.toLowerCase()}`}
         />
 
@@ -121,9 +121,9 @@ export default function NumberInput({
           onClick={handleIncrease}
           disabled={max !== undefined && value >= max}
           variant="secondary"
-          size="lg"
+          size="md"
           icon="plus"
-          className="flex-shrink-0 ml-1 sm:ml-2"
+          className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12"
           ariaLabel={`Increase ${label.toLowerCase()}`}
         />
       </div>

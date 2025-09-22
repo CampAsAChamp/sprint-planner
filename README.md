@@ -10,9 +10,13 @@ A Next.js application for sprint planning and project management. Calculate your
 - **PTO & Activities Tracking**: Add planned time off and activities that affect team capacity
 - **On-Call Time Management**: Account for on-call responsibilities during sprints
 - **Rollover Points Tracking**: Account for unfinished work from previous sprints
-- **Configuration Saving**: Save and load sprint configurations for reuse
+- **Configuration Management**: Save, load, duplicate, rename, and delete sprint configurations for reuse
+- **Progressive Web App (PWA)**: Install as a native app on mobile and desktop devices
+- **Quick Select**: Pre-configured sprint duration buttons for common sprint lengths
+- **Toast Notifications**: Real-time feedback for all user actions
+- **Smooth Animations**: Visual feedback and smooth transitions throughout the interface
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Dark Mode Support**: Toggle between light and dark themes
+- **Automatic Dark Mode**: Automatically adapts to your system's color scheme preference
 
 ## Sprint Capacity Calculation
 
@@ -39,6 +43,21 @@ For a team of 5 developers in a 10-day sprint:
 - With 3 rollover points: `47 - 3 = 44 points`
 
 **Final capacity: 44 story points**
+
+## Progressive Web App (PWA)
+
+The Sprint Planner is built as a Progressive Web App, which means you can install it on your device like a native application:
+
+### Installation
+- **Desktop**: Look for the install button in your browser's address bar or menu
+- **Mobile**: Add to home screen when prompted or through your browser's menu
+- **Offline**: Once installed, the app works offline and syncs when you're back online
+
+### PWA Features
+- **App-like Experience**: Full-screen interface without browser UI
+- **Fast Loading**: Cached resources for instant startup
+- **Offline Support**: Continue using saved configurations even without internet
+- **Native Integration**: Appears in your device's app drawer/home screen
 
 ## Getting Started
 
@@ -75,7 +94,7 @@ This project is configured for automatic deployment to GitHub Pages:
    - Go to your repository Settings
    - Navigate to Pages section
    - Set source to "GitHub Actions"
-3. **Automatic Deployment**: The GitHub Actions workflow will automatically build and deploy your app when you push to the `main` branch
+3. **Automatic Deployment**: The GitHub Actions workflow will automatically build and deploy your app when you push to the `master` branch
 
 Your app will be available at: `https://yourusername.github.io/sprint-planner`
 
@@ -91,13 +110,51 @@ npm run build
 
 The static files will be generated in the `out/` directory.
 
-## Configuration
+## Configuration Management
 
-The app uses the following configuration:
+The Sprint Planner includes advanced configuration management features:
+
+### Configuration Features
+- **Save Configurations**: Store multiple sprint setups with custom names
+- **Load Configurations**: Quickly switch between saved configurations
+- **Duplicate Configurations**: Create copies of existing configurations for variations
+- **Rename Configurations**: Update configuration names for better organization
+- **Delete Configurations**: Remove unused configurations to keep your list clean
+- **Auto-save**: Changes are automatically saved to your browser's local storage
+- **Export/Import**: Configurations persist across browser sessions
+
+### Technical Configuration
+
+The app uses the following technical setup:
 
 - **Next.js**: Configured for static export (`output: 'export'`)
 - **GitHub Actions**: Automated deployment workflow included
 - **Static Hosting**: Optimized for GitHub Pages and other static hosts
+- **PWA Manifest**: Configured for app installation and offline use
+- **Local Storage**: Configuration data stored locally in your browser
+
+## User Interface & Experience
+
+The Sprint Planner is designed with a focus on user experience and visual feedback:
+
+### Visual Features
+- **Smooth Animations**: Number inputs animate when values change, providing immediate visual feedback
+- **Color-coded Feedback**: Capacity changes are highlighted with green (increase) or red (decrease) animations
+- **Gradient Backgrounds**: Beautiful gradient backgrounds that adapt to light and dark modes
+- **Responsive Layout**: Optimized layouts for desktop, tablet, and mobile devices
+- **Interactive Elements**: Hover effects, focus states, and smooth transitions throughout
+
+### Accessibility
+- **Keyboard Navigation**: Full keyboard support for all interactive elements
+- **Screen Reader Support**: Proper ARIA labels and semantic HTML structure
+- **High Contrast**: Dark mode provides excellent contrast for better readability
+- **Touch Friendly**: Large touch targets optimized for mobile devices
+
+### Quick Actions
+- **Quick Select Buttons**: Pre-configured sprint duration buttons (1, 2, 3, 5, 10, 14 days)
+- **Counter Controls**: Easy increment/decrement buttons for all numeric inputs
+- **Toast Notifications**: Real-time feedback for all user actions (save, load, delete, etc.)
+- **Modal Dialogs**: Clean modal interfaces for configuration management
 
 ## Learn More
 

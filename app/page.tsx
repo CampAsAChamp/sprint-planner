@@ -101,7 +101,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
             {/* Main Form */}
             <div className="lg:col-span-3">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-4 sm:px-6 md:px-8 lg:px-10 pt-6 sm:pt-8 md:pt-10 pb-2">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-3 sm:px-6 md:px-8 lg:px-10 pt-6 sm:pt-8 md:pt-10 pb-2 overflow-hidden">
             {/* Team Members Input */}
             <NumberInput
               id="teamMembers"
