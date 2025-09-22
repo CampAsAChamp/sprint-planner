@@ -35,7 +35,8 @@ export default function QuickSelect({ title, options, selectedValue, onSelect, s
             <Button
               onClick={() => onSelect(option.value)}
               variant={selectedValue === option.value ? 'primary' : 'secondary'}
-              size="sm"
+              size="xl"
+              className="h-16 sm:h-20 min-w-[160px] sm:min-w-[180px] rounded-full"
               ariaLabel={option.ariaLabel}
             >
               {option.label}
