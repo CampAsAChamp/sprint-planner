@@ -81,7 +81,7 @@ export default function SprintCapacityOutput({
             ? 'text-blue-700 dark:text-blue-300'
             : 'text-white dark:text-white'
         }`}>
-          {currentCapacity.toFixed(1)} Days
+          {currentCapacity.toFixed(1)} Points
         </div>
       </div>
     </div>
