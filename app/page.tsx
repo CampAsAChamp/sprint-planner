@@ -6,6 +6,7 @@ import ActivityItem from './components/ActivityItem'
 import Button from './components/Button'
 import CounterControls from './components/CounterControls'
 import FormField from './components/FormField'
+import GitHubLogo from './components/GitHubLogo'
 import Modal from './components/Modal'
 import NumberInput from './components/NumberInput'
 import { PTOActivity } from './types/PTOActivity'
@@ -101,7 +102,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
             {/* Main Form */}
             <div className="lg:col-span-3">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-3 sm:px-6 md:px-8 lg:px-10 pt-6 sm:pt-8 md:pt-10 pb-2 overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-3 sm:px-6 md:px-8 lg:px-10 pt-4 sm:pt-6 md:pt-8 pb-2 overflow-hidden">
             {/* Team Members Input */}
             <NumberInput
               id="teamMembers"
@@ -114,82 +115,241 @@ export default function Home() {
             />
 
             {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
 
             {/* Sprint Days Input */}
-            <NumberInput
-              id="sprintDays"
-              label="Number of Sprint Days"
-              description="How many days is this sprint? [1-30]"
-              value={config.sprintDays}
-              min={1}
-              max={30}
-              onChange={(value) => updateConfig({ sprintDays: value })}
-              animating={sprintDaysAnimating}
-              lastAction={sprintDaysLastAction}
-              bottomMargin="mb-4"
-            />
-            
-            {/* Quick Sprint Duration Buttons */}
-            <QuickSelect
-              title="Quick Select"
-              options={[
-                { value: 5, label: "5 Days", ariaLabel: "Set sprint duration to 5 (one week)" },
-                { value: 10, label: "10 Days", ariaLabel: "Set sprint duration to 10 (two weeks)" },
-                { value: 30, label: "30 Days", ariaLabel: "Set sprint duration to 30 (one month)" }
-              ]}
-              selectedValue={config.sprintDays}
-              onSelect={(value) => updateConfig({ sprintDays: value })}
-              onAnimationTrigger={(action) => {
-                setSprintDaysLastAction(action)
-                setSprintDaysAnimating(true)
-                setTimeout(() => {
-                  setSprintDaysAnimating(false)
-                  setSprintDaysLastAction(null)
-                }, 200)
-              }}
-              showDuration={true}
-            />
+            <div className="mb-3">
+              <FormField
+                label="Number of Sprint Days"
+                description="How many days is this sprint? [1-30]"
+                className="mb-0"
+              >
+                <div className="flex items-center justify-center h-10 sm:h-12 gap-1 sm:gap-2">
+                  {/* Number Input */}
+                  <input
+                    type="number"
+                    id="sprintDays"
+                    min={1}
+                    max={30}
+                    value={config.sprintDays || ''}
+                    onChange={(e) => {
+                      const inputValue = parseInt(e.target.value) || 0;
+                      if (inputValue >= 1 && inputValue <= 30) {
+                        updateConfig({ sprintDays: inputValue });
+                      }
+                    }}
+                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                      !sprintDaysAnimating 
+                        ? 'scale-100 dark:text-white' 
+                        : sprintDaysLastAction === 'decrease' 
+                          ? 'scale-105 ring-2 ring-red-500 border-red-400 dark:border-red-500 text-red-600 dark:text-red-400'
+                          : sprintDaysLastAction === 'increase'
+                            ? 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400'
+                            : 'scale-100 dark:text-white'
+                    }`}
+                    placeholder="0"
+                  />
+
+                  {/* Minus Button */}
+                  <Button
+                    onClick={() => {
+                      setSprintDaysLastAction('decrease')
+                      setSprintDaysAnimating(true)
+                      updateConfig({ sprintDays: Math.max(1, config.sprintDays - 1) })
+                    }}
+                    disabled={config.sprintDays <= 1}
+                    variant="secondary"
+                    size="sm"
+                    icon="minus"
+                    className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10"
+                    ariaLabel="Decrease sprint days"
+                  />
+
+                  {/* Plus Button */}
+                  <Button
+                    onClick={() => {
+                      setSprintDaysLastAction('increase')
+                      setSprintDaysAnimating(true)
+                      updateConfig({ sprintDays: Math.min(30, config.sprintDays + 1) })
+                    }}
+                    disabled={config.sprintDays >= 30}
+                    variant="secondary"
+                    size="sm"
+                    icon="plus"
+                    className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10"
+                    ariaLabel="Increase sprint days"
+                  />
+
+                  {/* Separator */}
+                  <div className="w-px h-8 sm:h-10 bg-gray-300 dark:bg-gray-600 mx-2"></div>
+
+                  {/* Quick Select Buttons */}
+                  <div className="flex gap-1 sm:gap-2">
+                    <Button
+                      onClick={() => {
+                        const newValue = 5
+                        setSprintDaysLastAction(newValue > config.sprintDays ? 'increase' : 'decrease')
+                        setSprintDaysAnimating(true)
+                        updateConfig({ sprintDays: newValue })
+                      }}
+                      variant={config.sprintDays === 5 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set sprint duration to 5 (one week)"
+                    >
+                      5 Days
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const newValue = 10
+                        setSprintDaysLastAction(newValue > config.sprintDays ? 'increase' : 'decrease')
+                        setSprintDaysAnimating(true)
+                        updateConfig({ sprintDays: newValue })
+                      }}
+                      variant={config.sprintDays === 10 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set sprint duration to 10 (two weeks)"
+                    >
+                      10 Days
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const newValue = 30
+                        setSprintDaysLastAction(newValue > config.sprintDays ? 'increase' : 'decrease')
+                        setSprintDaysAnimating(true)
+                        updateConfig({ sprintDays: newValue })
+                      }}
+                      variant={config.sprintDays === 30 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set sprint duration to 30 (one month)"
+                    >
+                      30 Days
+                    </Button>
+                  </div>
+                </div>
+              </FormField>
+            </div>
 
             {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
 
             {/* Rollover Points Input */}
-            <NumberInput
-              id="rolloverPoints"
-              label="Rollover Points from Previous Sprint"
-              description="How many story points are rolling over from the previous sprint?"
-              value={config.rolloverPoints}
-              min={0}
-              onChange={(value) => updateConfig({ rolloverPoints: value })}
-              animating={rolloverPointsAnimating}
-              lastAction={rolloverPointsLastAction}
-              bottomMargin="mb-4"
-            />
-            
-            {/* Quick Rollover Points Buttons */}
-            <QuickSelect
-              title="Quick Select"
-              options={[
-                { value: 0, label: "0 Points", ariaLabel: "Set rollover points to 0" },
-                { value: 2, label: "2 Points", ariaLabel: "Set rollover points to 2" },
-                { value: 3, label: "3 Points", ariaLabel: "Set rollover points to 3" }
-              ]}
-              selectedValue={config.rolloverPoints}
-              onSelect={(value) => updateConfig({ rolloverPoints: value })}
-              onAnimationTrigger={(action) => {
-                setRolloverPointsLastAction(action)
-                setRolloverPointsAnimating(true)
-                setTimeout(() => {
-                  setRolloverPointsAnimating(false)
-                  setRolloverPointsLastAction(null)
-                }, 200)
-              }}
-              showDuration={false}
-            />
+            <div className="mb-3">
+              <FormField
+                label="Rollover Points from Previous Sprint"
+                description="How many story points are rolling over from the previous sprint?"
+                className="mb-0"
+              >
+                <div className="flex items-center justify-center h-10 sm:h-12 gap-1 sm:gap-2">
+                  {/* Number Input */}
+                  <input
+                    type="number"
+                    id="rolloverPoints"
+                    min={0}
+                    value={config.rolloverPoints || ''}
+                    onChange={(e) => {
+                      const inputValue = parseInt(e.target.value) || 0;
+                      if (inputValue >= 0) {
+                        updateConfig({ rolloverPoints: inputValue });
+                      }
+                    }}
+                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                      !rolloverPointsAnimating 
+                        ? 'scale-100 dark:text-white' 
+                        : rolloverPointsLastAction === 'decrease' 
+                          ? 'scale-105 ring-2 ring-red-500 border-red-400 dark:border-red-500 text-red-600 dark:text-red-400'
+                          : rolloverPointsLastAction === 'increase'
+                            ? 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400'
+                            : 'scale-100 dark:text-white'
+                    }`}
+                    placeholder="0"
+                  />
+
+                  {/* Minus Button */}
+                  <Button
+                    onClick={() => {
+                      setRolloverPointsLastAction('decrease')
+                      setRolloverPointsAnimating(true)
+                      updateConfig({ rolloverPoints: Math.max(0, config.rolloverPoints - 1) })
+                    }}
+                    disabled={config.rolloverPoints <= 0}
+                    variant="secondary"
+                    size="sm"
+                    icon="minus"
+                    className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10"
+                    ariaLabel="Decrease rollover points"
+                  />
+
+                  {/* Plus Button */}
+                  <Button
+                    onClick={() => {
+                      setRolloverPointsLastAction('increase')
+                      setRolloverPointsAnimating(true)
+                      updateConfig({ rolloverPoints: config.rolloverPoints + 1 })
+                    }}
+                    variant="secondary"
+                    size="sm"
+                    icon="plus"
+                    className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10"
+                    ariaLabel="Increase rollover points"
+                  />
+
+                  {/* Separator */}
+                  <div className="w-px h-8 sm:h-10 bg-gray-300 dark:bg-gray-600 mx-2"></div>
+
+                  {/* Quick Select Buttons */}
+                  <div className="flex gap-1 sm:gap-2">
+                    <Button
+                      onClick={() => {
+                        const newValue = 0
+                        setRolloverPointsLastAction(newValue > config.rolloverPoints ? 'increase' : 'decrease')
+                        setRolloverPointsAnimating(true)
+                        updateConfig({ rolloverPoints: newValue })
+                      }}
+                      variant={config.rolloverPoints === 0 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set rollover points to 0"
+                    >
+                      0 Points
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const newValue = 2
+                        setRolloverPointsLastAction(newValue > config.rolloverPoints ? 'increase' : 'decrease')
+                        setRolloverPointsAnimating(true)
+                        updateConfig({ rolloverPoints: newValue })
+                      }}
+                      variant={config.rolloverPoints === 2 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set rollover points to 2"
+                    >
+                      2 Points
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const newValue = 3
+                        setRolloverPointsLastAction(newValue > config.rolloverPoints ? 'increase' : 'decrease')
+                        setRolloverPointsAnimating(true)
+                        updateConfig({ rolloverPoints: newValue })
+                      }}
+                      variant={config.rolloverPoints === 3 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set rollover points to 3"
+                    >
+                      3 Points
+                    </Button>
+                  </div>
+                </div>
+              </FormField>
+            </div>
 
             {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
 
             {/* PTO and Activities Section */}
             <div className="mb-8">
@@ -222,57 +382,140 @@ export default function Home() {
 
               {/* Activities List */}
               {config.ptoActivities.length > 0 && (
-                <div className="mt-6 space-y-3">
+                <div className="mt-6 flex flex-wrap gap-3">
                   {config.ptoActivities.map((activity) => (
-                    <ActivityItem
-                      key={activity.id}
-                      activity={activity}
-                      onRemove={(id) => updateConfig({ 
-                        ptoActivities: config.ptoActivities.filter(item => item.id !== id) 
-                      })}
-                    />
+                    <div key={activity.id} className="flex-shrink-0 min-w-0">
+                      <ActivityItem
+                        activity={activity}
+                        onRemove={(id) => updateConfig({ 
+                          ptoActivities: config.ptoActivities.filter(item => item.id !== id) 
+                        })}
+                      />
+                    </div>
                   ))}
                 </div>
               )}
             </div>
 
             {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-4"></div>
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
 
             {/* On-Call Time Input */}
-            <NumberInput
-              id="onCallTime"
-              label="On-Call Time"
-              description="How many days of on-call time during this sprint?"
-              value={config.onCallTime}
-              min={0}
-              max={Math.max(0, (config.teamMembers * config.sprintDays) - config.ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0))}
-              onChange={(value) => updateConfig({ onCallTime: value })}
-              animating={onCallTimeAnimating}
-              lastAction={onCallTimeLastAction}
-              bottomMargin="mb-4"
-            />
-            
-            {/* Quick On-Call Duration Buttons */}
-            <QuickSelect
-              title="Quick Select"
-              options={[
-                { value: 0, label: "0 Days", ariaLabel: "Set on-call time to 0 days" },
-                { value: 1, label: "1 Day", ariaLabel: "Set on-call time to 1 day" },
-                { value: 2, label: "2 Days", ariaLabel: "Set on-call time to 2 days" }
-              ]}
-              selectedValue={config.onCallTime}
-              onSelect={(value) => updateConfig({ onCallTime: value })}
-              onAnimationTrigger={(action) => {
-                setOnCallTimeLastAction(action)
-                setOnCallTimeAnimating(true)
-                setTimeout(() => {
-                  setOnCallTimeAnimating(false)
-                  setOnCallTimeLastAction(null)
-                }, 200)
-              }}
-              showDuration={false}
-            />
+            <div className="mb-3">
+              <FormField
+                label="On-Call Time"
+                description="How many days of on-call time during this sprint?"
+                className="mb-0"
+              >
+                <div className="flex items-center justify-center h-10 sm:h-12 gap-1 sm:gap-2">
+                  {/* Number Input */}
+                  <input
+                    type="number"
+                    id="onCallTime"
+                    min={0}
+                    max={Math.max(0, (config.teamMembers * config.sprintDays) - config.ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0))}
+                    value={config.onCallTime || ''}
+                    onChange={(e) => {
+                      const inputValue = parseInt(e.target.value) || 0;
+                      const maxValue = Math.max(0, (config.teamMembers * config.sprintDays) - config.ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0));
+                      if (inputValue >= 0 && inputValue <= maxValue) {
+                        updateConfig({ onCallTime: inputValue });
+                      }
+                    }}
+                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                      !onCallTimeAnimating 
+                        ? 'scale-100 dark:text-white' 
+                        : onCallTimeLastAction === 'decrease' 
+                          ? 'scale-105 ring-2 ring-red-500 border-red-400 dark:border-red-500 text-red-600 dark:text-red-400'
+                          : onCallTimeLastAction === 'increase'
+                            ? 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400'
+                            : 'scale-100 dark:text-white'
+                    }`}
+                    placeholder="0"
+                  />
+
+                  {/* Minus Button */}
+                  <Button
+                    onClick={() => {
+                      setOnCallTimeLastAction('decrease')
+                      setOnCallTimeAnimating(true)
+                      updateConfig({ onCallTime: Math.max(0, config.onCallTime - 1) })
+                    }}
+                    disabled={config.onCallTime <= 0}
+                    variant="secondary"
+                    size="sm"
+                    icon="minus"
+                    className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10"
+                    ariaLabel="Decrease on-call time"
+                  />
+
+                  {/* Plus Button */}
+                  <Button
+                    onClick={() => {
+                      setOnCallTimeLastAction('increase')
+                      setOnCallTimeAnimating(true)
+                      const maxValue = Math.max(0, (config.teamMembers * config.sprintDays) - config.ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0));
+                      updateConfig({ onCallTime: Math.min(maxValue, config.onCallTime + 1) });
+                    }}
+                    disabled={config.onCallTime >= Math.max(0, (config.teamMembers * config.sprintDays) - config.ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0))}
+                    variant="secondary"
+                    size="sm"
+                    icon="plus"
+                    className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10"
+                    ariaLabel="Increase on-call time"
+                  />
+
+                  {/* Separator */}
+                  <div className="w-px h-8 sm:h-10 bg-gray-300 dark:bg-gray-600 mx-2"></div>
+
+                  {/* Quick Select Buttons */}
+                  <div className="flex gap-1 sm:gap-2">
+                    <Button
+                      onClick={() => {
+                        const newValue = 0
+                        setOnCallTimeLastAction(newValue > config.onCallTime ? 'increase' : 'decrease')
+                        setOnCallTimeAnimating(true)
+                        updateConfig({ onCallTime: newValue })
+                      }}
+                      variant={config.onCallTime === 0 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set on-call time to 0 days"
+                    >
+                      0 Days
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const newValue = 1
+                        setOnCallTimeLastAction(newValue > config.onCallTime ? 'increase' : 'decrease')
+                        setOnCallTimeAnimating(true)
+                        updateConfig({ onCallTime: newValue })
+                      }}
+                      variant={config.onCallTime === 1 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set on-call time to 1 day"
+                    >
+                      1 Day
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const newValue = 2
+                        setOnCallTimeLastAction(newValue > config.onCallTime ? 'increase' : 'decrease')
+                        setOnCallTimeAnimating(true)
+                        updateConfig({ onCallTime: newValue })
+                      }}
+                      variant={config.onCallTime === 2 ? 'primary' : 'secondary'}
+                      size="sm"
+                      className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
+                      ariaLabel="Set on-call time to 2 days"
+                    >
+                      2 Days
+                    </Button>
+                  </div>
+                </div>
+              </FormField>
+            </div>
 
               </div>
             </div>
@@ -476,6 +719,9 @@ export default function Home() {
         isVisible={toast.isVisible}
         onClose={hideToast}
       />
+
+      {/* GitHub Logo */}
+      <GitHubLogo />
     </main>
   )
 }

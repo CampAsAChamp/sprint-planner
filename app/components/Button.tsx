@@ -105,6 +105,11 @@ export default function Button({
       return 'w-10 h-10 text-sm'
     }
     
+    // For circular buttons with sm size
+    if ((icon === 'plus' || icon === 'minus') && size === 'sm' && !fullWidth) {
+      return 'w-8 h-8 text-xs'
+    }
+    
     // For circular buttons with xl size
     if ((icon === 'plus' || icon === 'minus') && size === 'xl') {
       return 'w-16 h-16 text-lg'

@@ -26,11 +26,11 @@ export default function QuickSelect({ title, options, selectedValue, onSelect, s
   }
 
   return (
-    <div className="mt-1 mb-8">
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 text-center">
+    <div className="flex flex-col items-center">
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 text-center">
         {title}
       </p>
-      <div className="flex gap-2 sm:gap-4 md:gap-6 justify-center flex-wrap">
+      <div className="flex gap-1 sm:gap-2 justify-center flex-wrap">
         {options.map((option) => (
           <div key={option.value} className="flex flex-col items-center">
             <Button
@@ -43,8 +43,8 @@ export default function QuickSelect({ title, options, selectedValue, onSelect, s
                 onSelect(option.value)
               }}
               variant={selectedValue === option.value ? 'primary' : 'secondary'}
-              size="lg"
-              className="h-10 sm:h-12 min-w-[100px] sm:min-w-[120px] rounded-full"
+              size="sm"
+              className="h-8 sm:h-10 min-w-[60px] sm:min-w-[80px] rounded-full text-xs sm:text-sm"
               ariaLabel={option.ariaLabel}
             >
               {option.label}

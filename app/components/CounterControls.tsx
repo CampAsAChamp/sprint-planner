@@ -56,9 +56,9 @@ export default function CounterControls({
   }, [isAnimating])
   return (
     <FormField label={label}>
-      <div className="flex items-center h-20">
+      <div className="flex items-center justify-center h-16">
         {/* Number Display */}
-        <div className={`flex-1 h-20 px-4 text-center border border-gray-300 dark:border-gray-600 rounded-lg font-medium text-xl mr-8 flex items-center justify-center focus:outline-none transition-all duration-200 ${getAnimationClasses()}`}>
+        <div className={`w-20 sm:w-24 h-16 px-4 text-center border border-gray-300 dark:border-gray-600 rounded-lg font-medium text-lg mr-6 flex items-center justify-center focus:outline-none transition-all duration-200 ${getAnimationClasses()}`}>
           {value}
         </div>
 
@@ -71,7 +71,7 @@ export default function CounterControls({
           }}
           disabled={value <= min}
           variant="secondary"
-          size="xl"
+          size="lg"
           icon="minus"
           className="flex-shrink-0 mr-2"
           ariaLabel={`Decrease ${label.toLowerCase()}`}
@@ -86,7 +86,7 @@ export default function CounterControls({
           }}
           disabled={value >= max}
           variant="secondary"
-          size="xl"
+          size="lg"
           icon="plus"
           className="flex-shrink-0 ml-2"
           ariaLabel={`Increase ${label.toLowerCase()}`}

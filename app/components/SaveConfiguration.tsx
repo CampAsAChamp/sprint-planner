@@ -212,8 +212,12 @@ export default function SaveConfiguration({
         <div className="relative" ref={dropdownRef}>
           <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-4 text-left">Current Configuration</h4>
           <div 
-            className="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-            onClick={() => setShowConfigDropdown(!showConfigDropdown)}
+            className={`bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600 transition-colors ${
+              configurations.length > 0 
+                ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600' 
+                : 'cursor-default'
+            }`}
+            onClick={() => configurations.length > 0 && setShowConfigDropdown(!showConfigDropdown)}
           >
             <div className="flex items-center justify-between">
               <p className="text-lg font-semibold text-blue-600 dark:text-blue-400">
@@ -223,14 +227,16 @@ export default function SaveConfiguration({
                 <div className="text-sm text-gray-500 dark:text-gray-400">
                   {configurations.length} total
                 </div>
-                <svg 
-                  className={`w-4 h-4 text-gray-400 transition-transform ${showConfigDropdown ? 'rotate-180' : ''}`} 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                {configurations.length > 0 && (
+                  <svg 
+                    className={`w-4 h-4 text-gray-400 transition-transform ${showConfigDropdown ? 'rotate-180' : ''}`} 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
               </div>
             </div>
           </div>
@@ -328,56 +334,21 @@ export default function SaveConfiguration({
           )}
         </div>
 
-        {/* Save Section */}
-        <div className="border-t border-gray-200 dark:border-gray-600 pt-6">
-          <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-4 text-left">Save Configuration</h4>
+        {/* Save Button */}
+        <div className="mt-6">
+          <Button
+            onClick={openSaveModal}
+            variant="primary"
+            size="md"
+            fullWidth
+            icon="save"
+          >
+            Save Configuration
+          </Button>
           
-          <div className="space-y-4">
-            {/* Include PTO Checkbox */}
-            <div className="flex items-center">
-              <input
-                id="includePto"
-                type="checkbox"
-                checked={includePto}
-                onChange={(e) => setIncludePto(e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="includePto" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                Include PTO & Activities
-              </label>
-            </div>
-
-            {/* Include Rollover Points Checkbox */}
-            <div className="flex items-center">
-              <input
-                id="includeRollover"
-                type="checkbox"
-                checked={includeRollover}
-                onChange={(e) => setIncludeRollover(e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="includeRollover" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                Include Rollover Points
-              </label>
-            </div>
-
-            {/* Save Button */}
-            <div className="pt-2">
-              <Button
-                onClick={openSaveModal}
-                variant="primary"
-                size="md"
-                fullWidth
-                icon="save"
-              >
-                Save Configuration
-              </Button>
-            </div>
-          </div>
-
-          <div className="mt-6 text-xs text-gray-500 dark:text-gray-400 text-left">
-            <p>Save includes: Team Size, Sprint Duration, On-Call Time{includeRollover ? ', Rollover Points' : ''}{includePto ? ', and PTO Activities' : ''}</p>
-            <p className="mt-1 text-gray-400 dark:text-gray-500">This saves the current configuration to localStorage for backup purposes.</p>
+          <div className="mt-4 text-xs text-gray-700 dark:text-gray-500 text-left">
+            <p>Saves configuration to localStorage for backup purposes.</p>
+            <p className="mt-1">Configuration is automatically loaded from localStorage on page load.</p>
           </div>
         </div>
       </div>
@@ -425,6 +396,40 @@ export default function SaveConfiguration({
                   {currentConfig.onCallTime > 0 ? `${currentConfig.onCallTime} Days` : 'None'}
                 </span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Include Options */}
+        <div className="mb-6">
+          <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-4">Include in Save</h4>
+          <div className="space-y-4">
+            {/* Include PTO Checkbox */}
+            <div className="flex items-center">
+              <input
+                id="modalIncludePto"
+                type="checkbox"
+                checked={includePto}
+                onChange={(e) => setIncludePto(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label htmlFor="modalIncludePto" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                Include PTO & Activities
+              </label>
+            </div>
+
+            {/* Include Rollover Points Checkbox */}
+            <div className="flex items-center">
+              <input
+                id="modalIncludeRollover"
+                type="checkbox"
+                checked={includeRollover}
+                onChange={(e) => setIncludeRollover(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label htmlFor="modalIncludeRollover" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                Include Rollover Points
+              </label>
             </div>
           </div>
         </div>
