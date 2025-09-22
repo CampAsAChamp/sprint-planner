@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 import ActivityItem from './components/ActivityItem'
 import Button from './components/Button'
-import ButtonGroup from './components/ButtonGroup'
 import CounterControls from './components/CounterControls'
 import FormField from './components/FormField'
 import Modal from './components/Modal'
@@ -14,6 +13,7 @@ import QuickSelect from './components/QuickSelect'
 import SaveConfiguration from './components/SaveConfiguration'
 import SprintCapacityOutput from './components/SprintCapacityOutput'
 import Toast from './components/Toast'
+import { getPluralSuffix } from './utils/pluralize'
 import { useSprintConfiguration } from './hooks/useSprintConfiguration'
 
 export default function Home() {
@@ -234,7 +234,7 @@ export default function Home() {
                   {config.teamMembers > 0 ? (
                     <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
                       <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Team Size</span>
-                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.teamMembers} Member{config.teamMembers !== 1 ? 's' : ''}</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.teamMembers} Member{getPluralSuffix(config.teamMembers)}</span>
                     </div>
                   ) : (
                     <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
@@ -246,7 +246,7 @@ export default function Home() {
                   {config.sprintDays > 0 ? (
                     <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
                       <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Sprint Duration</span>
-                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.sprintDays} Day{config.sprintDays !== 1 ? 's' : ''}</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.sprintDays} Day{getPluralSuffix(config.sprintDays)}</span>
                     </div>
                   ) : (
                     <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
@@ -264,7 +264,7 @@ export default function Home() {
                       <div className="text-sm text-blue-600 dark:text-blue-300 space-y-1">
                         {config.ptoActivities.map((activity) => (
                           <p key={activity.id} className="text-left">
-                            {activity.name}: {activity.developers} dev{activity.developers !== 1 ? 's' : ''} × {activity.duration} Day{activity.duration !== 1 ? 's' : ''}
+                            {activity.name}: {activity.developers} dev{getPluralSuffix(activity.developers)} × {activity.duration} Day{getPluralSuffix(activity.duration)}
                           </p>
                         ))}
                       </div>
@@ -279,7 +279,7 @@ export default function Home() {
                   {config.onCallTime > 0 ? (
                     <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
                       <span className="font-bold text-gray-900 dark:text-gray-100 text-left">On-Call Time</span>
-                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.onCallTime} Day{config.onCallTime !== 1 ? 's' : ''}</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.onCallTime} Day{getPluralSuffix(config.onCallTime)}</span>
                     </div>
                   ) : (
                     <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">

@@ -37,19 +37,62 @@ export default function Button({
     : 'font-medium transition-all duration-150 active:scale-95 outline-none focus:outline-none rounded-full'
   
   const variantClasses = {
-    primary: 'bg-blue-500 text-white hover:bg-blue-600 hover:ring-2 hover:ring-blue-300 active:bg-blue-700 active:ring-2 active:ring-blue-300 outline-none',
+    primary: [
+      'bg-blue-500 text-white',
+      'hover:bg-blue-600 hover:ring-2 hover:ring-blue-300',
+      'active:bg-blue-700 active:ring-2 active:ring-blue-300',
+      'outline-none'
+    ].join(' '),
+    
     secondary: icon === 'minus' 
-      ? 'border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 hover:ring-2 hover:ring-red-500 active:bg-gray-100 dark:active:bg-gray-600 outline-none'
-      : 'border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 hover:ring-2 hover:ring-blue-500 active:bg-gray-100 dark:active:bg-gray-600 outline-none',
-    danger: 'border border-red-300 dark:border-red-600 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:ring-2 hover:ring-red-300 outline-none',
-    ghost: 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 hover:ring-2 hover:ring-blue-500 outline-none'
+      ? [
+          'border border-gray-300 dark:border-gray-600',
+          'bg-white dark:bg-gray-700',
+          'text-gray-600 dark:text-gray-300',
+          'hover:bg-gray-50 dark:hover:bg-gray-600',
+          'hover:ring-2 hover:ring-red-500',
+          'active:bg-gray-100 dark:active:bg-gray-600',
+          'outline-none'
+        ].join(' ')
+      : [
+          'border border-gray-300 dark:border-gray-600',
+          'bg-white dark:bg-gray-700',
+          'text-gray-600 dark:text-gray-300',
+          'hover:bg-gray-50 dark:hover:bg-gray-600',
+          'hover:ring-2 hover:ring-blue-500',
+          'active:bg-gray-100 dark:active:bg-gray-600',
+          'outline-none'
+        ].join(' '),
+    
+    danger: [
+      'border border-red-300 dark:border-red-600',
+      'text-red-700 dark:text-red-300',
+      'hover:bg-red-50 dark:hover:bg-red-900/20',
+      'hover:ring-2 hover:ring-red-300',
+      'outline-none'
+    ].join(' '),
+    
+    ghost: [
+      'text-gray-600 dark:text-gray-300',
+      'hover:bg-gray-50 dark:hover:bg-gray-600',
+      'hover:ring-2 hover:ring-blue-500',
+      'outline-none'
+    ].join(' ')
   }
   
-  const pressedClasses = isPressed 
-    ? (icon === 'minus' 
-        ? '!bg-red-500 !text-white !border-red-500 ring-2 ring-red-300' 
-        : '!bg-blue-500 !text-white !border-blue-500 ring-2 ring-blue-300')
-    : ''
+  const getPressedClasses = () => {
+    if (!isPressed) {
+      return ''
+    }
+    
+    if (icon === 'minus') {
+      return '!bg-red-500 !text-white !border-red-500 ring-2 ring-red-300'
+    }
+    
+    return '!bg-blue-500 !text-white !border-blue-500 ring-2 ring-blue-300'
+  }
+
+  const pressedClasses = getPressedClasses()
   
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-sm',
@@ -71,10 +114,16 @@ export default function Button({
     pressedClasses
   ].filter(Boolean).join(' ')
   
+  const getIconSize = (buttonSize: string) => {
+    if (buttonSize === 'xl') return 'xl'
+    if (buttonSize === 'lg') return 'lg'
+    return 'md'
+  }
+
   const iconElement = icon ? (
     <Icon 
       name={icon} 
-      size={size === 'xl' ? 'xl' : size === 'lg' ? 'lg' : 'md'} 
+      size={getIconSize(size)} 
     />
   ) : null
   

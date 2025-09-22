@@ -1,6 +1,7 @@
 'use client'
 
 import Button from './Button'
+import { getPluralSuffix } from '../utils/pluralize'
 
 interface PTOActivity {
   id: string
@@ -20,7 +21,7 @@ export default function ActivityItem({ activity, onRemove }: ActivityItemProps) 
       <div>
         <h4 className="font-medium text-gray-900 dark:text-white">{activity.name}</h4>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {activity.developers} developer{activity.developers !== 1 ? 's' : ''} • {activity.duration} day{activity.duration !== 1 ? 's' : ''}
+          {activity.developers} developer{getPluralSuffix(activity.developers)} • {activity.duration} day{getPluralSuffix(activity.duration)}
         </p>
       </div>
       <Button
