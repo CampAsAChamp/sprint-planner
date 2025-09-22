@@ -14,9 +14,10 @@ interface QuickSelectProps {
   selectedValue: number
   onSelect: (value: number) => void
   showDuration?: boolean
+  onAnimationTrigger?: (action: 'increase' | 'decrease') => void
 }
 
-export default function QuickSelect({ title, options, selectedValue, onSelect, showDuration = false }: QuickSelectProps) {
+export default function QuickSelect({ title, options, selectedValue, onSelect, showDuration = false, onAnimationTrigger }: QuickSelectProps) {
   const getDurationText = (days: number) => {
     if (days === 5) return "1 week"
     if (days === 10) return "2 weeks"
@@ -33,7 +34,14 @@ export default function QuickSelect({ title, options, selectedValue, onSelect, s
         {options.map((option) => (
           <div key={option.value} className="flex flex-col items-center">
             <Button
-              onClick={() => onSelect(option.value)}
+              onClick={() => {
+                // Determine if this is an increase or decrease
+                if (onAnimationTrigger && option.value !== selectedValue) {
+                  const action = option.value > selectedValue ? 'increase' : 'decrease'
+                  onAnimationTrigger(action)
+                }
+                onSelect(option.value)
+              }}
               variant={selectedValue === option.value ? 'primary' : 'secondary'}
               size="xl"
               className="h-16 sm:h-20 min-w-[160px] sm:min-w-[180px] rounded-full"

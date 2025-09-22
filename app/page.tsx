@@ -42,7 +42,9 @@ export default function Home() {
   // Animation states for text inputs
   const [teamMembersAnimating, setTeamMembersAnimating] = useState<boolean>(false)
   const [sprintDaysAnimating, setSprintDaysAnimating] = useState<boolean>(false)
+  const [sprintDaysLastAction, setSprintDaysLastAction] = useState<'increase' | 'decrease' | null>(null)
   const [onCallTimeAnimating, setOnCallTimeAnimating] = useState<boolean>(false)
+  const [onCallTimeLastAction, setOnCallTimeLastAction] = useState<'increase' | 'decrease' | null>(null)
   
   // Animation effects
   useEffect(() => {
@@ -53,13 +55,19 @@ export default function Home() {
   
   useEffect(() => {
     setSprintDaysAnimating(true)
-    const timer = setTimeout(() => setSprintDaysAnimating(false), 200)
+    const timer = setTimeout(() => {
+      setSprintDaysAnimating(false)
+      setSprintDaysLastAction(null)
+    }, 200)
     return () => clearTimeout(timer)
   }, [config.sprintDays])
   
   useEffect(() => {
     setOnCallTimeAnimating(true)
-    const timer = setTimeout(() => setOnCallTimeAnimating(false), 200)
+    const timer = setTimeout(() => {
+      setOnCallTimeAnimating(false)
+      setOnCallTimeLastAction(null)
+    }, 200)
     return () => clearTimeout(timer)
   }, [config.onCallTime])
 
@@ -103,6 +111,7 @@ export default function Home() {
               max={30}
               onChange={(value) => updateConfig({ sprintDays: value })}
               animating={sprintDaysAnimating}
+              lastAction={sprintDaysLastAction}
               bottomMargin="mb-4"
             />
             
@@ -116,6 +125,14 @@ export default function Home() {
               ]}
               selectedValue={config.sprintDays}
               onSelect={(value) => updateConfig({ sprintDays: value })}
+              onAnimationTrigger={(action) => {
+                setSprintDaysLastAction(action)
+                setSprintDaysAnimating(true)
+                setTimeout(() => {
+                  setSprintDaysAnimating(false)
+                  setSprintDaysLastAction(null)
+                }, 200)
+              }}
               showDuration={true}
             />
 
@@ -180,6 +197,7 @@ export default function Home() {
               max={Math.max(0, (config.teamMembers * config.sprintDays) - config.ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0))}
               onChange={(value) => updateConfig({ onCallTime: value })}
               animating={onCallTimeAnimating}
+              lastAction={onCallTimeLastAction}
               bottomMargin="mb-4"
             />
             
@@ -193,6 +211,14 @@ export default function Home() {
               ]}
               selectedValue={config.onCallTime}
               onSelect={(value) => updateConfig({ onCallTime: value })}
+              onAnimationTrigger={(action) => {
+                setOnCallTimeLastAction(action)
+                setOnCallTimeAnimating(true)
+                setTimeout(() => {
+                  setOnCallTimeAnimating(false)
+                  setOnCallTimeLastAction(null)
+                }, 200)
+              }}
               showDuration={false}
             />
               </div>

@@ -14,6 +14,7 @@ interface NumberInputProps {
   max?: number
   onChange: (value: number) => void
   animating?: boolean
+  lastAction?: 'increase' | 'decrease' | null
   placeholder?: string
   bottomMargin?: string
 }
@@ -27,11 +28,16 @@ export default function NumberInput({
   max,
   onChange,
   animating = false,
+  lastAction: externalLastAction = null,
   placeholder = "0",
   bottomMargin = "mb-12"
 }: NumberInputProps) {
   const [lastAction, setLastAction] = useState<'decrease' | 'increase' | null>(null)
   const [isAnimating, setIsAnimating] = useState(false)
+  
+  // Use external animating prop when provided
+  const shouldAnimate = animating || isAnimating
+  const currentAction = externalLastAction || lastAction
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = parseInt(e.target.value) || 0;
@@ -78,12 +84,12 @@ export default function NumberInput({
           max={max}
           value={value || ''}
           onChange={handleInputChange}
-          className={`flex-1 h-16 sm:h-20 px-2 sm:px-4 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200 font-medium text-lg sm:text-xl mr-2 sm:mr-8 ${
-            isAnimating && lastAction === 'decrease' 
-              ? 'scale-105 ring-2 ring-red-500 bg-red-200 dark:bg-red-800 border-red-400 dark:border-red-500' 
-              : isAnimating && lastAction === 'increase'
-              ? 'scale-105 ring-2 ring-blue-500 bg-blue-200 dark:bg-blue-800 border-blue-400 dark:border-blue-500'
-              : 'scale-100'
+          className={`flex-1 h-16 sm:h-20 px-2 sm:px-4 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-lg sm:text-xl mr-2 sm:mr-8 ${
+            shouldAnimate && currentAction === 'decrease' 
+              ? 'scale-105 ring-2 ring-red-500 border-red-400 dark:border-red-500 text-red-600 dark:text-red-400' 
+              : shouldAnimate && currentAction === 'increase'
+              ? 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400'
+              : 'scale-100 dark:text-white'
           }`}
           placeholder={placeholder}
         />
