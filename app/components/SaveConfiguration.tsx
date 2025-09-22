@@ -618,7 +618,7 @@ export default function SaveConfiguration({
             Are you sure you want to delete the configuration
           </p>
           <p className="font-semibold text-lg text-red-600 dark:text-red-400 mb-6">
-            "{configToDelete?.name}"?
+            &quot;{configToDelete?.name}&quot;?
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             This action cannot be undone.
