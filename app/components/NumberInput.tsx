@@ -11,7 +11,7 @@ interface NumberInputProps {
   description: string
   value: number
   min: number
-  max: number
+  max?: number
   onChange: (value: number) => void
   animating?: boolean
   placeholder?: string
@@ -35,7 +35,7 @@ export default function NumberInput({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = parseInt(e.target.value) || 0;
-    if (inputValue >= min && inputValue <= max) {
+    if (inputValue >= min && (max === undefined || inputValue <= max)) {
       onChange(inputValue);
     }
   };
@@ -49,7 +49,7 @@ export default function NumberInput({
   const handleIncrease = () => {
     setLastAction('increase')
     setIsAnimating(true)
-    onChange(Math.min(max, value + 1));
+    onChange(max === undefined ? value + 1 : Math.min(max, value + 1));
   };
 
   // Reset animation state after animation duration
@@ -80,11 +80,9 @@ export default function NumberInput({
           onChange={handleInputChange}
           className={`flex-1 h-16 sm:h-20 px-2 sm:px-4 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200 font-medium text-lg sm:text-xl mr-2 sm:mr-8 ${
             isAnimating && lastAction === 'decrease' 
-              ? 'scale-105 ring-2 ring-red-500 bg-red-100 dark:bg-red-900/40 border-red-300 dark:border-red-600' 
+              ? 'scale-105 ring-2 ring-red-500 bg-red-200 dark:bg-red-800 border-red-400 dark:border-red-500' 
               : isAnimating && lastAction === 'increase'
-              ? 'scale-105 ring-2 ring-blue-500 bg-blue-100 dark:bg-blue-900/40 border-blue-300 dark:border-blue-600'
-              : animating 
-              ? 'scale-105 bg-blue-50 dark:bg-blue-900/20'
+              ? 'scale-105 ring-2 ring-blue-500 bg-blue-200 dark:bg-blue-800 border-blue-400 dark:border-blue-500'
               : 'scale-100'
           }`}
           placeholder={placeholder}
@@ -104,7 +102,7 @@ export default function NumberInput({
         {/* Plus Button */}
         <Button
           onClick={handleIncrease}
-          disabled={value >= max}
+          disabled={max !== undefined && value >= max}
           variant="secondary"
           size="xl"
           icon="plus"

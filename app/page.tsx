@@ -42,6 +42,7 @@ export default function Home() {
   // Animation states for text inputs
   const [teamMembersAnimating, setTeamMembersAnimating] = useState<boolean>(false)
   const [sprintDaysAnimating, setSprintDaysAnimating] = useState<boolean>(false)
+  const [onCallTimeAnimating, setOnCallTimeAnimating] = useState<boolean>(false)
   
   // Animation effects
   useEffect(() => {
@@ -55,18 +56,21 @@ export default function Home() {
     const timer = setTimeout(() => setSprintDaysAnimating(false), 200)
     return () => clearTimeout(timer)
   }, [config.sprintDays])
+  
+  useEffect(() => {
+    setOnCallTimeAnimating(true)
+    const timer = setTimeout(() => setOnCallTimeAnimating(false), 200)
+    return () => clearTimeout(timer)
+  }, [config.onCallTime])
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       <div className="w-full max-w-7xl mx-auto px-4 py-8 text-center">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent dark:from-blue-300 dark:to-gray-300 mb-6">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent dark:from-blue-300 dark:to-gray-300">
             Sprint Capacity Calculator
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
-            Calculate your team&apos;s sprint capacity in real-time
-          </p>
         </div>
 
         {/* Calculator Form */}
@@ -79,13 +83,15 @@ export default function Home() {
             <NumberInput
               id="teamMembers"
               label="Number of Team Members"
-              description="How many developers are working on this sprint? [1-15]"
+              description="How many developers are working on this sprint?"
               value={config.teamMembers}
               min={1}
-              max={15}
               onChange={(value) => updateConfig({ teamMembers: value })}
               animating={teamMembersAnimating}
             />
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
 
             {/* Sprint Days Input */}
             <NumberInput
@@ -112,6 +118,9 @@ export default function Home() {
               onSelect={(value) => updateConfig({ sprintDays: value })}
               showDuration={true}
             />
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
 
             {/* PTO and Activities Section */}
             <div className="mb-12">
@@ -158,17 +167,33 @@ export default function Home() {
               )}
             </div>
 
+            {/* Divider */}
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
+
             {/* On-Call Time Input */}
-            <ButtonGroup
+            <NumberInput
+              id="onCallTime"
               label="On-Call Time"
-              description="How many days of on-call time during this sprint? [0-2]"
+              description="How many days of on-call time during this sprint?"
+              value={config.onCallTime}
+              min={0}
+              max={Math.max(0, (config.teamMembers * config.sprintDays) - config.ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0))}
+              onChange={(value) => updateConfig({ onCallTime: value })}
+              animating={onCallTimeAnimating}
+              bottomMargin="mb-4"
+            />
+            
+            {/* Quick On-Call Duration Buttons */}
+            <QuickSelect
+              title="Quick Select"
               options={[
-                { value: 0, label: "0", ariaLabel: "Set on-call time to 0" },
-                { value: 1, label: "1", ariaLabel: "Set on-call time to 1" },
-                { value: 2, label: "2", ariaLabel: "Set on-call time to 2" }
+                { value: 0, label: "0 Days", ariaLabel: "Set on-call time to 0 days" },
+                { value: 1, label: "1 Day", ariaLabel: "Set on-call time to 1 day" },
+                { value: 2, label: "2 Days", ariaLabel: "Set on-call time to 2 days" }
               ]}
               selectedValue={config.onCallTime}
               onSelect={(value) => updateConfig({ onCallTime: value })}
+              showDuration={false}
             />
               </div>
             </div>
