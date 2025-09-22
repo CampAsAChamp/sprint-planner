@@ -65,7 +65,7 @@ export default function Home() {
             Sprint Capacity Calculator
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
-            Calculate your team's sprint capacity in real-time
+            Calculate your team&apos;s sprint capacity in real-time
           </p>
         </div>
 
