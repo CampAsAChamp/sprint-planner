@@ -659,8 +659,7 @@ export default function Home() {
               onClick={() => setWizardData(prev => ({ ...prev, developers: config.teamMembers }))}
               variant="secondary"
               size="sm"
-              fullWidth
-              className="mt-6"
+              className="mt-6 px-8 py-4 rounded-full mx-auto block"
             >
               Select All Developers ({config.teamMembers})
             </Button>
