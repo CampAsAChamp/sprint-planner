@@ -130,12 +130,20 @@ export default function SprintCapacityOutput({
               </div>
             )}
             {rolloverPoints > 0 && (
-              <div className="flex justify-between items-center pt-2 border-t border-green-200 dark:border-green-800">
-                <span className="font-bold text-gray-900 dark:text-white">New Points (excluding on-call)</span>
-                <span className="font-bold text-gray-900 dark:text-white">
-                  {newPoints.toFixed(1)}
-                </span>
-              </div>
+              <>
+                <div className="flex justify-between items-center pt-2 border-t border-green-200 dark:border-green-800">
+                  <span className="font-bold text-gray-900 dark:text-white">New Points (excluding on-call)</span>
+                  <span className="font-bold text-gray-900 dark:text-white">
+                    {newPoints.toFixed(1)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-gray-900 dark:text-white">New Points (including on-call)</span>
+                  <span className="font-bold text-gray-900 dark:text-white">
+                    {(totalPoints - rolloverPoints).toFixed(1)}
+                  </span>
+                </div>
+              </>
             )}
             <div className="flex justify-between items-center pt-2 border-t border-green-200 dark:border-green-800">
               <span className="font-bold text-gray-900 dark:text-white flex items-center gap-1">

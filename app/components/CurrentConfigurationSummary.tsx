@@ -28,7 +28,7 @@ export default function CurrentConfigurationSummary({
           <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
             <span className="font-bold text-gray-900 dark:text-gray-100 text-left">Team Size</span>
             <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">
-              {teamMembers} Member{getPluralSuffix(teamMembers)}
+              {teamMembers} Dev{getPluralSuffix(teamMembers)}
             </span>
           </div>
         ) : (

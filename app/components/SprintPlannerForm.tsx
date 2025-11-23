@@ -47,7 +47,7 @@ export default function SprintPlannerForm({
         {/* Team Members Input */}
         <NumberInput
           id="teamMembers"
-          label="Number of Team Members"
+          label="Number of Developers"
           description="How many developers are working on this sprint?"
           value={config.teamMembers}
           min={1}
