@@ -1,6 +1,6 @@
 import React from 'react'
-import { PTOActivity } from '../types/PTOActivity'
-import { getPluralSuffix } from '../utils/pluralize'
+import { PTOActivity } from '../../types/PTOActivity'
+import { getPluralSuffix } from '../../utils/pluralize'
 
 interface CurrentConfigurationSummaryProps {
   configName?: string

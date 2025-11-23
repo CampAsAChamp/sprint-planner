@@ -1,7 +1,7 @@
-import CurrentConfigurationSummary from './CurrentConfigurationSummary'
-import ConfigurationManager from './SaveConfiguration'
+import CurrentConfigurationSummary from '../configuration/CurrentConfigurationSummary'
+import SaveConfiguration from '../configuration/SaveConfiguration'
 import SprintCapacityOutput from './SprintCapacityOutput'
-import { PTOActivity } from '../types/PTOActivity'
+import { PTOActivity } from '../../types/PTOActivity'
 
 interface SprintConfiguration {
   id: string
@@ -70,7 +70,7 @@ export default function SprintPlannerSidebar({
         rolloverPoints={rolloverPoints}
       />
       
-      <ConfigurationManager
+      <SaveConfiguration
         configurations={configurations}
         currentConfigId={currentConfigId}
         currentConfig={currentConfig}

@@ -1,4 +1,4 @@
-import { PTOActivity } from '../types/PTOActivity'
+import { PTOActivity } from '../../types/PTOActivity'
 
 interface SprintConfiguration {
   id: string

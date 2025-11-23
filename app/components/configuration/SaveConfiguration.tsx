@@ -1,13 +1,13 @@
 'use client'
 
-import Button from './Button'
+import Button from '../ui/Button'
 import ConfigurationDropdown from './ConfigurationDropdown'
 import SaveConfigurationModal from './SaveConfigurationModal'
 import EditConfigurationModal from './EditConfigurationModal'
 import DuplicateConfigurationModal from './DuplicateConfigurationModal'
 import DeleteConfigurationModal from './DeleteConfigurationModal'
-import { useConfigurationManager } from '../hooks/useConfigurationManager'
-import { PTOActivity } from '../types/PTOActivity'
+import { useConfigurationManager } from '../../hooks/useConfigurationManager'
+import { PTOActivity } from '../../types/PTOActivity'
 
 interface SprintConfiguration {
   id: string

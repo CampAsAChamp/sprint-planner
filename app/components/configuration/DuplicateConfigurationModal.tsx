@@ -1,9 +1,9 @@
 'use client'
 
-import Modal from './Modal'
-import Button from './Button'
-import FormField from './FormField'
-import { PTOActivity } from '../types/PTOActivity'
+import Modal from '../ui/Modal'
+import Button from '../ui/Button'
+import FormField from '../ui/FormField'
+import { PTOActivity } from '../../types/PTOActivity'
 
 interface SprintConfiguration {
   id: string
@@ -17,26 +17,26 @@ interface SprintConfiguration {
   updatedAt: string
 }
 
-interface EditConfigurationModalProps {
+interface DuplicateConfigurationModalProps {
   isOpen: boolean
   onClose: () => void
   config: SprintConfiguration | null
-  editConfigName: string
-  setEditConfigName: (name: string) => void
-  onUpdateConfigurationName: () => void
+  duplicateConfigName: string
+  setDuplicateConfigName: (name: string) => void
+  onDuplicateConfiguration: () => void
 }
 
-export default function EditConfigurationModal({
+export default function DuplicateConfigurationModal({
   isOpen,
   onClose,
   config,
-  editConfigName,
-  setEditConfigName,
-  onUpdateConfigurationName
-}: EditConfigurationModalProps) {
+  duplicateConfigName,
+  setDuplicateConfigName,
+  onDuplicateConfiguration
+}: DuplicateConfigurationModalProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && editConfigName.trim()) {
-      onUpdateConfigurationName()
+    if (e.key === 'Enter' && duplicateConfigName.trim()) {
+      onDuplicateConfiguration()
     }
   }
 
@@ -44,16 +44,16 @@ export default function EditConfigurationModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Edit Configuration Name"
+      title="Duplicate Configuration"
       titleSize="text-2xl"
       titleCentered={true}
     >
-      <FormField label="Configuration Name" align="left">
+      <FormField label="New Configuration Name" align="left">
         <input
           type="text"
-          value={editConfigName}
-          onChange={(e) => setEditConfigName(e.target.value)}
-          placeholder="e.g Pool Team, GED, Half Team"
+          value={duplicateConfigName}
+          onChange={(e) => setDuplicateConfigName(e.target.value)}
+          placeholder="Enter name for duplicated configuration..."
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           autoFocus
           onKeyDown={handleKeyDown}
@@ -70,13 +70,13 @@ export default function EditConfigurationModal({
           Cancel
         </Button>
         <Button
-          onClick={onUpdateConfigurationName}
+          onClick={onDuplicateConfiguration}
           variant="primary"
           size="md"
           fullWidth
-          disabled={!editConfigName.trim()}
+          disabled={!duplicateConfigName.trim()}
         >
-          Update Name
+          Duplicate Configuration
         </Button>
       </div>
     </Modal>

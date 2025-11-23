@@ -1,8 +1,8 @@
 'use client'
 
-import Modal from './Modal'
-import Button from './Button'
-import { PTOActivity } from '../types/PTOActivity'
+import Modal from '../ui/Modal'
+import Button from '../ui/Button'
+import { PTOActivity } from '../../types/PTOActivity'
 
 interface SprintConfiguration {
   id: string
