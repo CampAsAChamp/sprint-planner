@@ -1,6 +1,9 @@
+import GitHubLogo from './GitHubLogo'
+
 export default function Footer() {
   return (
     <footer className="fixed bottom-4 left-0 right-0 text-center text-sm text-gray-600 dark:text-gray-400 z-50">
+      <GitHubLogo />
       Created by{' '}
       <a
         href="https://github.com/CampAsAChamp"

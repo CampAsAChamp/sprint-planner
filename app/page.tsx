@@ -3,7 +3,6 @@
 import { useState } from 'react'
 
 import Footer from './components/layout/Footer'
-import GitHubLogo from './components/layout/GitHubLogo'
 import PageHeader from './components/layout/PageHeader'
 import PTOActivityWizard from './components/pto/PTOActivityWizard'
 import SprintPlannerForm from './components/sprint/SprintPlannerForm'
@@ -135,7 +134,6 @@ export default function Home() {
         onClose={hideToast}
       />
 
-      <GitHubLogo />
       <Footer />
     </main>
   )
