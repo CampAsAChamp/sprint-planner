@@ -27,7 +27,7 @@ interface SprintPlannerSidebarProps {
   configurations: SprintConfiguration[]
   currentConfigId: string | null
   currentConfig: SprintConfiguration
-  onCreateConfiguration: (name: string, configData?: Partial<SprintConfiguration>) => string | null
+  onCreateConfiguration: (name: string, configData?: Partial<SprintConfiguration>) => string
   onDuplicateConfiguration: (configId: string, newName?: string) => string | null
   onUpdateConfigurationName: (configId: string, newName: string) => void
   onDeleteConfiguration: (configId: string) => void
