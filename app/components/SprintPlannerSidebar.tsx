@@ -1,5 +1,5 @@
 import CurrentConfigurationSummary from './CurrentConfigurationSummary'
-import SaveConfiguration from './SaveConfiguration'
+import ConfigurationManager from './SaveConfiguration'
 import SprintCapacityOutput from './SprintCapacityOutput'
 import { PTOActivity } from '../types/PTOActivity'
 
@@ -62,7 +62,6 @@ export default function SprintPlannerSidebar({
         ptoActivities={ptoActivities}
       />
       
-      {/* Sprint Capacity Calculation */}
       <SprintCapacityOutput 
         teamMembers={teamMembers}
         sprintDays={sprintDays}
@@ -71,8 +70,7 @@ export default function SprintPlannerSidebar({
         rolloverPoints={rolloverPoints}
       />
       
-      {/* Configuration Manager */}
-      <SaveConfiguration
+      <ConfigurationManager
         configurations={configurations}
         currentConfigId={currentConfigId}
         currentConfig={currentConfig}

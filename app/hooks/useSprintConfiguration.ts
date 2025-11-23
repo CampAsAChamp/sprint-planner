@@ -245,7 +245,7 @@ export function useSprintConfiguration() {
     if (configurations.length > 0) {
       saveConfigurationsToStorage()
     }
-  }, [saveConfigurationsToStorage])
+  }, [saveConfigurationsToStorage, configurations.length])
 
   // Auto-load configurations on mount
   useEffect(() => {

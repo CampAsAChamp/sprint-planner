@@ -21,7 +21,7 @@ interface SprintConfiguration {
   updatedAt: string
 }
 
-interface SaveConfigurationProps {
+interface ConfigurationManagerProps {
   configurations: SprintConfiguration[]
   currentConfigId: string | null
   currentConfig: SprintConfiguration
@@ -33,7 +33,7 @@ interface SaveConfigurationProps {
   onShowToast: (message: string, type: 'success' | 'error' | 'save' | 'load' | 'delete') => void
 }
 
-export default function SaveConfiguration({
+export default function ConfigurationManager({
   configurations,
   currentConfigId,
   currentConfig,
@@ -43,7 +43,7 @@ export default function SaveConfiguration({
   onDeleteConfiguration,
   onSwitchToConfiguration,
   onShowToast
-}: SaveConfigurationProps) {
+}: ConfigurationManagerProps) {
   const manager = useConfigurationManager({
     currentConfig,
     configurations,
