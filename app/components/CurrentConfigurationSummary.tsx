@@ -3,6 +3,7 @@ import { PTOActivity } from '../types/PTOActivity'
 import { getPluralSuffix } from '../utils/pluralize'
 
 interface CurrentConfigurationSummaryProps {
+  configName?: string
   teamMembers: number
   sprintDays: number
   rolloverPoints: number
@@ -11,17 +12,25 @@ interface CurrentConfigurationSummaryProps {
 }
 
 export default function CurrentConfigurationSummary({
+  configName,
   teamMembers,
   sprintDays,
   rolloverPoints,
   onCallTime,
   ptoActivities
 }: CurrentConfigurationSummaryProps) {
+  const isDefaultConfig = !configName || configName === 'Default Configuration'
   return (
     <div className="bg-blue-100 dark:bg-blue-900/20 border border-blue-400 dark:border-blue-800 rounded-lg p-4 sm:p-6 lg:p-8">
-      <h3 className="text-xl font-medium text-blue-900 dark:text-blue-100 mb-8 text-center">
+      <h3 className="text-xl font-medium text-blue-900 dark:text-blue-100 text-center">
         Current Configuration
       </h3>
+      {!isDefaultConfig && (
+        <p className="text-sm text-blue-600 dark:text-blue-300 text-center mt-1 mb-6 font-medium">
+          {configName}
+        </p>
+      )}
+      {isDefaultConfig && <div className="mb-8"></div>}
       <div className="space-y-3">
         {/* Team Size */}
         {teamMembers > 0 ? (

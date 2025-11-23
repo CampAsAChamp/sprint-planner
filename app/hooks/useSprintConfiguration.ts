@@ -96,11 +96,24 @@ export function useSprintConfiguration() {
   }
 
   const updateConfigurationName = (configId: string, newName: string) => {
+    const trimmedName = newName.trim() || 'Untitled Configuration'
+    const updatedAt = new Date().toISOString()
+    
     setConfigurations(prev => prev.map(config => 
       config.id === configId 
-        ? { ...config, name: newName.trim() || 'Untitled Configuration', updatedAt: new Date().toISOString() }
+        ? { ...config, name: trimmedName, updatedAt }
         : config
     ))
+    
+    // If we're updating the current config's name, update currentConfig as well
+    if (currentConfigId === configId) {
+      setCurrentConfig(prev => ({
+        ...prev,
+        name: trimmedName,
+        updatedAt
+      }))
+    }
+    
     showToast('Configuration name updated successfully!', 'save')
   }
 

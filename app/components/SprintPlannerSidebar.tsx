@@ -54,6 +54,7 @@ export default function SprintPlannerSidebar({
   return (
     <div className="lg:col-span-2">
       <CurrentConfigurationSummary
+        configName={currentConfig.name}
         teamMembers={teamMembers}
         sprintDays={sprintDays}
         rolloverPoints={rolloverPoints}
