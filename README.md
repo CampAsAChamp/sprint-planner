@@ -166,7 +166,8 @@ To learn more about Next.js, take a look at the following resources:
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 TODO:
-1. Add edit button to PTO/activities entries
-2. Make light mode have more contrast, especially in Main Box
-3. Add a toggle for light/dark mode
+~~1. Add edit button to PTO/activities entries~~
+~~2. Make light mode have more contrast, especially in Main Box~~
+~~3. Add a toggle for light/dark mode~~
 4. Make rollover points into final output box because it should show total points (includes rollover) and total new points (doesn't include rollover)
+~~5. Make the save configuration buttons on by default~~

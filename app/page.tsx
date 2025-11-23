@@ -10,9 +10,9 @@ import GitHubLogo from './components/GitHubLogo'
 import Modal from './components/Modal'
 import NumberInput from './components/NumberInput'
 import { PTOActivity } from './types/PTOActivity'
-import QuickSelect from './components/QuickSelect'
 import SaveConfiguration from './components/SaveConfiguration'
 import SprintCapacityOutput from './components/SprintCapacityOutput'
+import ThemeToggle from './components/ThemeToggle'
 import Toast from './components/Toast'
 import { getPluralSuffix } from './utils/pluralize'
 import { useSprintConfiguration } from './hooks/useSprintConfiguration'
@@ -34,6 +34,7 @@ export default function Home() {
   } = useSprintConfiguration()
   
   const [showWizard, setShowWizard] = useState<boolean>(false)
+  const [editingActivityId, setEditingActivityId] = useState<string | null>(null)
   const [wizardData, setWizardData] = useState<{
     name: string
     developers: number
@@ -43,6 +44,8 @@ export default function Home() {
     developers: 1,
     duration: 1
   })
+  const [nameError, setNameError] = useState<string>('')
+  const [nameFieldBounce, setNameFieldBounce] = useState<boolean>(false)
   
   // Animation states for text inputs
   const [teamMembersAnimating, setTeamMembersAnimating] = useState<boolean>(false)
@@ -89,10 +92,13 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      {/* Theme Toggle */}
+      <ThemeToggle />
+      
       <div className="w-full max-w-7xl mx-auto px-4 py-8 text-center">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-500 to-white bg-clip-text text-transparent dark:from-blue-300 dark:to-gray-300">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-900 bg-clip-text text-transparent dark:from-blue-300 dark:to-gray-300">
             Sprint Capacity Calculator
           </h1>
         </div>
@@ -138,14 +144,14 @@ export default function Home() {
                         updateConfig({ sprintDays: inputValue });
                       }
                     }}
-                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                       !sprintDaysAnimating 
-                        ? 'scale-100 dark:text-white' 
+                        ? 'scale-100 text-gray-900 dark:text-white' 
                         : sprintDaysLastAction === 'decrease' 
                           ? 'scale-105 ring-2 ring-red-500 border-red-400 dark:border-red-500 text-red-600 dark:text-red-400'
                           : sprintDaysLastAction === 'increase'
                             ? 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400'
-                            : 'scale-100 dark:text-white'
+                            : 'scale-100 text-gray-900 dark:text-white'
                     }`}
                     placeholder="0"
                   />
@@ -255,14 +261,14 @@ export default function Home() {
                         updateConfig({ rolloverPoints: inputValue });
                       }
                     }}
-                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                       !rolloverPointsAnimating 
-                        ? 'scale-100 dark:text-white' 
+                        ? 'scale-100 text-gray-900 dark:text-white' 
                         : rolloverPointsLastAction === 'decrease' 
                           ? 'scale-105 ring-2 ring-red-500 border-red-400 dark:border-red-500 text-red-600 dark:text-red-400'
                           : rolloverPointsLastAction === 'increase'
                             ? 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400'
-                            : 'scale-100 dark:text-white'
+                            : 'scale-100 text-gray-900 dark:text-white'
                     }`}
                     placeholder="0"
                   />
@@ -351,60 +357,11 @@ export default function Home() {
             {/* Divider */}
             <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
 
-            {/* PTO and Activities Section */}
-            <div className="mb-8">
-              <label className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-2 text-center">
-                PTO & Activities
-              </label>
-              
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
-                Add planned time off and activities that will affect team capacity
-              </p>
-              
-              {/* Add Entry Button */}
-              <Button
-                onClick={() => {
-                  setWizardData({
-                    name: '',
-                    developers: 1,
-                    duration: 1
-                  })
-                  setShowWizard(true)
-                }}
-                variant="secondary"
-                size="lg"
-                icon="plus"
-                fullWidth
-                className="h-12"
-              >
-                Add PTO or Activity
-              </Button>
-
-              {/* Activities List */}
-              {config.ptoActivities.length > 0 && (
-                <div className="mt-6 flex flex-wrap gap-3">
-                  {config.ptoActivities.map((activity) => (
-                    <div key={activity.id} className="flex-shrink-0 min-w-0">
-                      <ActivityItem
-                        activity={activity}
-                        onRemove={(id) => updateConfig({ 
-                          ptoActivities: config.ptoActivities.filter(item => item.id !== id) 
-                        })}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Divider */}
-            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
-
             {/* On-Call Time Input */}
             <div className="mb-3">
               <FormField
                 label="On-Call Time"
-                description="How many days of on-call time during this sprint?"
+                description="How many points of on-call time during this sprint?"
                 className="mb-0"
               >
                 <div className="flex items-center justify-center h-10 sm:h-12 gap-1 sm:gap-2">
@@ -422,14 +379,14 @@ export default function Home() {
                         updateConfig({ onCallTime: inputValue });
                       }
                     }}
-                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                    className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                       !onCallTimeAnimating 
-                        ? 'scale-100 dark:text-white' 
+                        ? 'scale-100 text-gray-900 dark:text-white' 
                         : onCallTimeLastAction === 'decrease' 
                           ? 'scale-105 ring-2 ring-red-500 border-red-400 dark:border-red-500 text-red-600 dark:text-red-400'
                           : onCallTimeLastAction === 'increase'
                             ? 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400'
-                            : 'scale-100 dark:text-white'
+                            : 'scale-100 text-gray-900 dark:text-white'
                     }`}
                     placeholder="0"
                   />
@@ -480,9 +437,9 @@ export default function Home() {
                       variant={config.onCallTime === 0 ? 'primary' : 'secondary'}
                       size="sm"
                       className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
-                      ariaLabel="Set on-call time to 0 days"
+                      ariaLabel="Set on-call time to 0 points"
                     >
-                      0 Days
+                      0 Points
                     </Button>
                     <Button
                       onClick={() => {
@@ -494,27 +451,93 @@ export default function Home() {
                       variant={config.onCallTime === 1 ? 'primary' : 'secondary'}
                       size="sm"
                       className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
-                      ariaLabel="Set on-call time to 1 day"
+                      ariaLabel="Set on-call time to 1 point"
                     >
-                      1 Day
+                      1 Point
                     </Button>
                     <Button
                       onClick={() => {
-                        const newValue = 2
+                        const newValue = 3
                         setOnCallTimeLastAction(newValue > config.onCallTime ? 'increase' : 'decrease')
                         setOnCallTimeAnimating(true)
                         updateConfig({ onCallTime: newValue })
                       }}
-                      variant={config.onCallTime === 2 ? 'primary' : 'secondary'}
+                      variant={config.onCallTime === 3 ? 'primary' : 'secondary'}
                       size="sm"
                       className="h-8 sm:h-10 min-w-[50px] sm:min-w-[60px] rounded-full text-xs sm:text-sm"
-                      ariaLabel="Set on-call time to 2 days"
+                      ariaLabel="Set on-call time to 3 points"
                     >
-                      2 Days
+                      3 Points
                     </Button>
                   </div>
                 </div>
               </FormField>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 dark:border-gray-600 my-6"></div>
+
+            {/* PTO and Activities Section */}
+            <div className="mb-8">
+              <label className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-2 text-center">
+                PTO & Activities
+              </label>
+              
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+                Add planned time off and activities that will affect team capacity
+              </p>
+              
+              {/* Add Entry Button */}
+              <Button
+                onClick={() => {
+                  setEditingActivityId(null)
+                  setWizardData({
+                    name: '',
+                    developers: 1,
+                    duration: 1
+                  })
+                  setNameError('')
+                  setNameFieldBounce(false)
+                  setShowWizard(true)
+                }}
+                variant="secondary"
+                size="lg"
+                icon="plus"
+                fullWidth
+                className="h-12"
+              >
+                Add PTO / Activity
+              </Button>
+
+              {/* Activities List */}
+              {config.ptoActivities.length > 0 && (
+                <div className="mt-6 flex flex-wrap gap-3">
+                  {config.ptoActivities.map((activity) => (
+                    <div key={activity.id} className="flex-shrink-0 min-w-0">
+                      <ActivityItem
+                        activity={activity}
+                        onRemove={(id) => updateConfig({ 
+                          ptoActivities: config.ptoActivities.filter(item => item.id !== id) 
+                        })}
+                        onEdit={(id) => {
+                          const activityToEdit = config.ptoActivities.find(item => item.id === id)
+                          if (activityToEdit) {
+                            setEditingActivityId(id)
+                            setWizardData({
+                              name: activityToEdit.name,
+                              developers: activityToEdit.developers,
+                              duration: activityToEdit.duration
+                            })
+                            setNameError('')
+                            setNameFieldBounce(false)
+                            setShowWizard(true)
+                          }
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
               </div>
@@ -522,7 +545,7 @@ export default function Home() {
 
             {/* Capacity Display Sidebar */}
             <div className="lg:col-span-2">
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 sm:p-6 lg:p-8">
+              <div className="bg-blue-100 dark:bg-blue-900/20 border border-blue-400 dark:border-blue-800 rounded-lg p-4 sm:p-6 lg:p-8">
                 <h3 className="text-xl font-medium text-blue-900 dark:text-blue-100 mb-8 text-center">
                   Current Configuration
                 </h3>
@@ -563,6 +586,17 @@ export default function Home() {
                     </div>
                   )}
                   
+                  {config.onCallTime > 0 ? (
+                    <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">On-Call Time</span>
+                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.onCallTime} Point{getPluralSuffix(config.onCallTime)}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
+                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">On-Call Time</span>
+                      <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">None</span>
+                    </div>
+                  )}
                   {config.ptoActivities.length > 0 ? (
                     <div className="mt-4">
                       <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300 mb-2">
@@ -584,17 +618,6 @@ export default function Home() {
                     </div>
                   )}
                   
-                  {config.onCallTime > 0 ? (
-                    <div className="flex justify-between items-center text-lg text-gray-700 dark:text-gray-300">
-                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">On-Call Time</span>
-                      <span className="font-semibold text-blue-700 dark:text-blue-200 text-right">{config.onCallTime} Day{getPluralSuffix(config.onCallTime)}</span>
-                    </div>
-                  ) : (
-                    <div className="flex justify-between items-center text-lg text-gray-500 dark:text-gray-400">
-                      <span className="font-bold text-gray-900 dark:text-gray-100 text-left">On-Call Time</span>
-                      <span className="font-semibold text-gray-500 dark:text-gray-400 text-right">None</span>
-                    </div>
-                  )}
                 </div>
               </div>
               
@@ -627,22 +650,38 @@ export default function Home() {
       {/* Wizard Modal */}
       <Modal
         isOpen={showWizard}
-        onClose={() => setShowWizard(false)}
-        title="Add PTO or Activity"
+        onClose={() => {
+          setShowWizard(false)
+          setEditingActivityId(null)
+          setNameError('')
+          setNameFieldBounce(false)
+        }}
+        title={editingActivityId ? "Edit PTO or Activity" : "Add PTO / Activity"}
         titleSize="text-3xl"
         titleCentered={true}
       >
         <div>
           {/* Activity Name */}
-          <FormField label="Name">
+          <FormField label="Name" required align="left">
             <input
               type="text"
               value={wizardData.name}
-              onChange={(e) => setWizardData(prev => ({ ...prev, name: e.target.value }))}
+              onChange={(e) => {
+                setWizardData(prev => ({ ...prev, name: e.target.value }))
+                if (nameError) setNameError('')
+              }}
               placeholder="e.g., Team Retreat, Holiday, Training"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-all ${
+                nameError 
+                  ? 'border-red-500 dark:border-red-500 focus:ring-red-500' 
+                  : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+              } ${nameFieldBounce ? 'animate-bounce-horizontal' : ''}`}
               autoFocus
+              required
             />
+            {nameError && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-400">{nameError}</p>
+            )}
           </FormField>
 
           {/* Number of Developers */}
@@ -661,7 +700,7 @@ export default function Home() {
               size="sm"
               className="mt-6 px-8 py-4 rounded-full mx-auto block"
             >
-              Select All Developers ({config.teamMembers})
+              All Devs ({config.teamMembers})
             </Button>
           </div>
 
@@ -682,7 +721,12 @@ export default function Home() {
         {/* Modal Actions */}
         <div className="flex gap-4 mt-8">
           <Button
-            onClick={() => setShowWizard(false)}
+            onClick={() => {
+              setShowWizard(false)
+              setEditingActivityId(null)
+              setNameError('')
+              setNameFieldBounce(false)
+            }}
             variant="secondary"
             size="md"
             fullWidth
@@ -691,22 +735,51 @@ export default function Home() {
           </Button>
           <Button
             onClick={() => {
-              const newActivity: PTOActivity = {
-                id: Date.now().toString(),
-                name: wizardData.name.trim() || 'Untitled Activity',
-                developers: wizardData.developers,
-                duration: wizardData.duration
+              // Validate name
+              const trimmedName = wizardData.name.trim()
+              if (!trimmedName) {
+                setNameError('Name is required')
+                setNameFieldBounce(true)
+                setTimeout(() => setNameFieldBounce(false), 500)
+                return
               }
-              updateConfig({ 
-                ptoActivities: [...config.ptoActivities, newActivity] 
-              })
+
+              if (editingActivityId) {
+                // Edit existing activity
+                updateConfig({ 
+                  ptoActivities: config.ptoActivities.map(item => 
+                    item.id === editingActivityId 
+                      ? {
+                          ...item,
+                          name: trimmedName,
+                          developers: wizardData.developers,
+                          duration: wizardData.duration
+                        }
+                      : item
+                  )
+                })
+              } else {
+                // Create new activity
+                const newActivity: PTOActivity = {
+                  id: Date.now().toString(),
+                  name: trimmedName,
+                  developers: wizardData.developers,
+                  duration: wizardData.duration
+                }
+                updateConfig({ 
+                  ptoActivities: [...config.ptoActivities, newActivity] 
+                })
+              }
               setShowWizard(false)
+              setEditingActivityId(null)
+              setNameError('')
             }}
             variant="primary"
             size="md"
             fullWidth
+            className={!wizardData.name.trim() ? 'opacity-50 cursor-not-allowed' : ''}
           >
-            Add Activity
+            {editingActivityId ? 'Save Changes' : 'Add'}
           </Button>
         </div>
       </Modal>

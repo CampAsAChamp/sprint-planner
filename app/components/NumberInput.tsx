@@ -101,7 +101,7 @@ export default function NumberInput({
           max={max}
           value={value || ''}
           onChange={handleInputChange}
-          className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${getAnimationClasses()}`}
+          className={`w-20 sm:w-24 h-10 sm:h-12 px-1 sm:px-3 text-center border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 transition-all duration-200 font-medium text-sm sm:text-base md:text-lg lg:text-xl [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${getAnimationClasses()}`}
           placeholder={placeholder}
         />
 

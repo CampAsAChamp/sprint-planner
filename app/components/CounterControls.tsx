@@ -30,7 +30,7 @@ export default function CounterControls({
   // Get animation classes based on current state
   const getAnimationClasses = () => {
     if (!isAnimating) {
-      return 'scale-100 bg-white dark:bg-gray-700 dark:text-white focus:bg-white focus:dark:bg-gray-700'
+      return 'scale-100 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:bg-white focus:dark:bg-gray-700'
     }
     
     if (lastAction === 'decrease') {
@@ -41,7 +41,7 @@ export default function CounterControls({
       return 'scale-105 ring-2 ring-blue-500 border-blue-400 dark:border-blue-500 text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-700 focus:bg-white focus:dark:bg-gray-700'
     }
     
-    return 'scale-100 bg-white dark:bg-gray-700 dark:text-white focus:bg-white focus:dark:bg-gray-700'
+    return 'scale-100 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:bg-white focus:dark:bg-gray-700'
   }
 
   // Reset animation state after animation duration
@@ -56,7 +56,7 @@ export default function CounterControls({
   }, [isAnimating])
   return (
     <FormField label={label}>
-      <div className="flex items-center justify-center h-16">
+      <div className="flex items-center justify-center h-16 mt-4">
         {/* Number Display */}
         <div className={`w-20 sm:w-24 h-16 px-4 text-center border border-gray-300 dark:border-gray-600 rounded-lg font-medium text-lg mr-6 flex items-center justify-center focus:outline-none transition-all duration-200 ${getAnimationClasses()}`}>
           {value}

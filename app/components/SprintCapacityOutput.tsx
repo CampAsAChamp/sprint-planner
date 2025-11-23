@@ -26,13 +26,16 @@ export default function SprintCapacityOutput({
   const [isAnimating, setIsAnimating] = useState(false)
   const [previousCapacity, setPreviousCapacity] = useState<number>(0)
   const calculateCapacity = () => {
-    // Basic calculation: team members * sprint days - PTO days - on-call days - rollover points
+    // Basic calculation: team members * sprint days - PTO days
     const totalPtoDays = ptoActivities.reduce((sum, activity) => sum + (activity.developers * activity.duration), 0);
-    const totalCapacity = (teamMembers * sprintDays) - totalPtoDays - onCallTime - rolloverPoints;
-    return Math.max(0, totalCapacity);
+    const baseCapacity = teamMembers * sprintDays;
+    const totalPoints = Math.max(0, baseCapacity - totalPtoDays);
+    const newPoints = Math.max(0, totalPoints - rolloverPoints - onCallTime);
+    return { baseCapacity, totalPtoDays, totalPoints, rolloverPoints, newPoints, onCallTime };
   };
 
-  const currentCapacity = calculateCapacity();
+  const { baseCapacity, totalPtoDays, totalPoints, newPoints } = calculateCapacity();
+  const currentCapacity = totalPoints;
 
   // Track capacity changes and trigger animations
   useEffect(() => {
@@ -61,12 +64,12 @@ export default function SprintCapacityOutput({
   // Get container styling based on animation state
   const getContainerClasses = () => {
     if (isAnimating && lastAction === 'decrease') {
-      return 'border-2 border-red-300 dark:border-red-600 ring-2 ring-red-500'
+      return 'bg-white dark:bg-transparent border-2 border-red-300 dark:border-red-600 ring-2 ring-red-500'
     }
     if (isAnimating && lastAction === 'increase') {
-      return 'border-2 border-blue-300 dark:border-blue-600 ring-2 ring-blue-500'
+      return 'bg-white dark:bg-transparent border-2 border-blue-300 dark:border-blue-600 ring-2 ring-blue-500'
     }
-    return 'border-2 border-green-200 dark:border-green-800'
+    return 'bg-green-100 dark:bg-transparent border-2 border-green-400 dark:border-green-800'
   }
 
   // Get title styling based on animation state
@@ -88,7 +91,7 @@ export default function SprintCapacityOutput({
     if (isAnimating && lastAction === 'increase') {
       return 'text-blue-700 dark:text-blue-300'
     }
-    return 'text-white dark:text-white'
+    return 'text-gray-900 dark:text-white'
   }
 
   return (
@@ -99,6 +102,64 @@ export default function SprintCapacityOutput({
       <div className="text-center">
         <div className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 transition-colors duration-200 ${getCapacityClasses()}`}>
           {currentCapacity.toFixed(1)} Points
+        </div>
+        
+        {/* Breakdown Section */}
+        <div className="mt-6 pt-4 border-t border-green-300 dark:border-green-700">
+          <div className="space-y-2 text-sm sm:text-base">
+            <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
+              <span className="font-medium">Base Capacity</span>
+              <span className="font-semibold">{teamMembers} dev{teamMembers !== 1 ? 's' : ''} × {sprintDays} day{sprintDays !== 1 ? 's' : ''} = {baseCapacity.toFixed(1)}</span>
+            </div>
+            {rolloverPoints > 0 && (
+              <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
+                <span className="font-medium">Rollover Points</span>
+                <span className="font-semibold">- {rolloverPoints.toFixed(1)}</span>
+              </div>
+            )}
+            {onCallTime > 0 && (
+              <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
+                <span className="font-medium">On-Call Time</span>
+                <span className="font-semibold">- {onCallTime.toFixed(1)}</span>
+              </div>
+            )}
+            {totalPtoDays > 0 && (
+              <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
+                <span className="font-medium">PTO & Activities</span>
+                <span className="font-semibold">- {totalPtoDays.toFixed(1)}</span>
+              </div>
+            )}
+            {rolloverPoints > 0 && (
+              <div className="flex justify-between items-center pt-2 border-t border-green-200 dark:border-green-800">
+                <span className="font-bold text-gray-900 dark:text-white">New Points (excluding on-call)</span>
+                <span className="font-bold text-gray-900 dark:text-white">
+                  {newPoints.toFixed(1)}
+                </span>
+              </div>
+            )}
+            <div className="flex justify-between items-center pt-2 border-t border-green-200 dark:border-green-800">
+              <span className="font-bold text-gray-900 dark:text-white flex items-center gap-1">
+                Total Capacity
+                <span className="relative group">
+                  <svg 
+                    className="w-4 h-4 text-gray-500 dark:text-gray-400 cursor-help" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 16v-4m0-4h.01"/>
+                  </svg>
+                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                    Total Capacity = Base Capacity - PTO & Activities
+                  </span>
+                </span>
+              </span>
+              <span className="font-bold text-gray-900 dark:text-white">
+                {totalPoints.toFixed(1)}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
