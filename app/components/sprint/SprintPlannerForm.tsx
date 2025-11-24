@@ -1,6 +1,5 @@
 import ControlledNumberInput from '../ui/ControlledNumberInput'
 import Divider from '../ui/Divider'
-import NumberInput from '../ui/NumberInput'
 import PTOActivitiesSection from '../pto_activity/PTOActivitiesSection'
 import { PTOActivity } from '../../types/PTOActivity'
 
