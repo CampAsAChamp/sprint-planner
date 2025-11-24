@@ -56,7 +56,7 @@ export default function ConfigurationManager({
 
   return (
     <div className="bg-orange-100 dark:bg-orange-500/20 border border-orange-400 dark:border-orange-600 rounded-lg p-6 mt-6">
-      <h3 className="text-lg font-semibold text-orange-700 dark:text-orange-200 mb-4">
+      <h3 className="text-xl font-medium text-orange-700 dark:text-orange-200 mb-4">
         Configuration Manager
       </h3>
       

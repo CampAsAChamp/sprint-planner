@@ -64,12 +64,12 @@ export default function SprintCapacityOutput({
   // Get container styling based on animation state
   const getContainerClasses = () => {
     if (isAnimating && lastAction === 'decrease') {
-      return 'bg-white dark:bg-transparent border-2 border-red-300 dark:border-red-600 ring-2 ring-red-500'
+      return 'bg-white dark:bg-red-950/30 border-2 border-red-300 dark:border-red-600 ring-2 ring-red-500'
     }
     if (isAnimating && lastAction === 'increase') {
-      return 'bg-white dark:bg-transparent border-2 border-blue-300 dark:border-blue-600 ring-2 ring-blue-500'
+      return 'bg-white dark:bg-blue-950/30 border-2 border-blue-300 dark:border-blue-600 ring-2 ring-blue-500'
     }
-    return 'bg-green-100 dark:bg-transparent border-2 border-green-400 dark:border-green-800'
+    return 'bg-green-100 dark:bg-green-900/20 border-2 border-green-400 dark:border-green-800'
   }
 
   // Get title styling based on animation state
@@ -100,7 +100,7 @@ export default function SprintCapacityOutput({
         Sprint Capacity
       </h3>
       <div className="text-center">
-        <output className={`text-2xl sm:text-3xl lg:text-3xl font-bold mb-4 transition-colors duration-200 ${getCapacityClasses()}`}>
+        <output className={`text-2xl sm:text-3xl lg:text-2xl font-bold mb-4 transition-colors duration-200 ${getCapacityClasses()}`}>
           {currentCapacity.toFixed(1)} Points
         </output>
         

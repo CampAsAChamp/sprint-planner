@@ -47,7 +47,7 @@ export default function SprintPlannerForm({
         {/* Team Members Input */}
         <NumberInput
           id="teamMembers"
-          label="Number of Developers"
+          label="Developers"
           description="How many developers are working on this sprint?"
           value={config.teamMembers}
           min={1}
@@ -60,7 +60,7 @@ export default function SprintPlannerForm({
         {/* Sprint Days Input */}
         <ControlledNumberInput
           id="sprintDays"
-          label="Number of Sprint Days"
+          label="Sprint Duration"
           description="How many days is this sprint? [1-30]"
           value={config.sprintDays}
           min={1}
@@ -91,7 +91,7 @@ export default function SprintPlannerForm({
         {/* Rollover Points Input */}
         <ControlledNumberInput
           id="rolloverPoints"
-          label="Rollover Points from Previous Sprint"
+          label="Rollover Points"
           description="How many story points are rolling over from the previous sprint?"
           value={config.rolloverPoints}
           min={0}
