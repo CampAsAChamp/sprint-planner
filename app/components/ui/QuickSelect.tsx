@@ -1,6 +1,6 @@
 'use client'
 
-import Button from './Button'
+import Button from '@/app/components/ui/Button'
 
 interface QuickSelectOption {
   value: number

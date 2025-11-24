@@ -1,6 +1,6 @@
 'use client'
 
-import Icon from './Icon'
+import Icon from '@/app/components/ui/Icon'
 import { useState } from 'react'
 
 interface ButtonProps {

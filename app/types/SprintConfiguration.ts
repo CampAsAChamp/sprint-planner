@@ -1,4 +1,4 @@
-import { PTOActivity } from './PTOActivity'
+import { PTOActivity } from '@/app/types/PTOActivity'
 
 export interface SprintConfiguration {
   id: string

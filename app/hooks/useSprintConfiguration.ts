@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { SprintConfiguration } from '../types/SprintConfiguration'
+import { SprintConfiguration } from '@/app/types/SprintConfiguration'
 
 interface ToastState {
   message: string

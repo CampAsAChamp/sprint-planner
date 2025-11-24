@@ -1,7 +1,7 @@
 'use client'
 
-import Button from '../ui/Button'
-import { getPluralSuffix } from '../../utils/pluralize'
+import Button from '@/app/components/ui/Button'
+import { getPluralSuffix } from '@/app/utils/pluralize'
 
 interface PTOActivity {
   id: string

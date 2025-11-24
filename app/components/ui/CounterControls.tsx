@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
-import Button from './Button'
-import FormField from './FormField'
+import Button from '@/app/components/ui/Button'
+import FormField from '@/app/components/ui/FormField'
 
 interface CounterControlsProps {
   label: string

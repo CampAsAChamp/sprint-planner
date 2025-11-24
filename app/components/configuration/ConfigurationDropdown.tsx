@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { SprintConfiguration } from '../../types/SprintConfiguration'
+import { SprintConfiguration } from '@/app/types/SprintConfiguration'
 
 interface ConfigurationDropdownProps {
   configurations: SprintConfiguration[]

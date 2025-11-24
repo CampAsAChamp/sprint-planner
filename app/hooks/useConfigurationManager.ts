@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { SprintConfiguration } from '../types/SprintConfiguration'
+import { SprintConfiguration } from '@/app/types/SprintConfiguration'
 
 interface UseConfigurationManagerProps {
   currentConfig: SprintConfiguration

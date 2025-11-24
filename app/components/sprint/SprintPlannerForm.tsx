@@ -1,7 +1,7 @@
-import ControlledNumberInput from '../ui/ControlledNumberInput'
-import Divider from '../ui/Divider'
-import PTOActivitiesSection from '../pto_activity/PTOActivitiesSection'
-import { PTOActivity } from '../../types/PTOActivity'
+import ControlledNumberInput from '@/app/components/ui/ControlledNumberInput'
+import Divider from '@/app/components/ui/Divider'
+import PTOActivitiesSection from '@/app/components/pto_activity/PTOActivitiesSection'
+import { PTOActivity } from '@/app/types/PTOActivity'
 
 interface AnimationState {
   animating: boolean

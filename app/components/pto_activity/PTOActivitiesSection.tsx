@@ -1,7 +1,7 @@
 import React from 'react'
-import PtoActivityItem from './PTOActivityItem'
-import Button from '../ui/Button'
-import { PTOActivity } from '../../types/PTOActivity'
+import PtoActivityItem from '@/app/components/pto_activity/PTOActivityItem'
+import Button from '@/app/components/ui/Button'
+import { PTOActivity } from '@/app/types/PTOActivity'
 
 interface PTOActivitiesSectionProps {
   ptoActivities: PTOActivity[]

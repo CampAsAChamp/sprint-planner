@@ -1,4 +1,4 @@
-import GitHubLogo from './GitHubLogo'
+import GitHubLogo from '@/app/components/layout/GitHubLogo'
 
 export default function Footer() {
   return (

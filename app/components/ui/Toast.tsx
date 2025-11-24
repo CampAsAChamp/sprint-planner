@@ -1,7 +1,7 @@
 'use client'
 
-import Button from './Button'
-import Icon from './Icon'
+import Button from '@/app/components/ui/Button'
+import Icon from '@/app/components/ui/Icon'
 import { useEffect } from 'react'
 
 interface ToastProps {

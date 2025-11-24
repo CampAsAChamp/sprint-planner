@@ -1,9 +1,9 @@
 'use client'
 
-import Modal from '../../ui/Modal'
-import Button from '../../ui/Button'
-import FormField from '../../ui/FormField'
-import { SprintConfiguration } from '../../../types/SprintConfiguration'
+import Modal from '@/app/components/ui/Modal'
+import Button from '@/app/components/ui/Button'
+import FormField from '@/app/components/ui/FormField'
+import { SprintConfiguration } from '@/app/types/SprintConfiguration'
 
 interface DuplicateConfigurationModalProps {
   isOpen: boolean

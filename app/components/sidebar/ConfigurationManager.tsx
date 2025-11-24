@@ -1,14 +1,14 @@
 'use client'
 
 import { useRef } from 'react'
-import Button from '../ui/Button'
-import ConfigurationDropdown from '../configuration/ConfigurationDropdown'
-import SaveConfigurationModal from '../configuration/modals/SaveConfigurationModal'
-import EditConfigurationModal from '../configuration/modals/EditConfigurationModal'
-import DuplicateConfigurationModal from '../configuration/modals/DuplicateConfigurationModal'
-import DeleteConfigurationModal from '../configuration/modals/DeleteConfigurationModal'
-import { useConfigurationManager } from '../../hooks/useConfigurationManager'
-import { SprintConfiguration } from '../../types/SprintConfiguration'
+import Button from '@/app/components/ui/Button'
+import ConfigurationDropdown from '@/app/components/configuration/ConfigurationDropdown'
+import SaveConfigurationModal from '@/app/components/configuration/modals/SaveConfigurationModal'
+import EditConfigurationModal from '@/app/components/configuration/modals/EditConfigurationModal'
+import DuplicateConfigurationModal from '@/app/components/configuration/modals/DuplicateConfigurationModal'
+import DeleteConfigurationModal from '@/app/components/configuration/modals/DeleteConfigurationModal'
+import { useConfigurationManager } from '@/app/hooks/useConfigurationManager'
+import { SprintConfiguration } from '@/app/types/SprintConfiguration'
 
 interface ConfigurationManagerProps {
   configurations: SprintConfiguration[]

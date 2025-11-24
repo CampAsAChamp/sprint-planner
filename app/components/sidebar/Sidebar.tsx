@@ -1,8 +1,8 @@
-import CurrentConfigurationSummary from './CurrentConfigurationSummary'
-import ConfigurationManager from './ConfigurationManager'
-import SprintCapacityOutput from './SprintCapacityOutput'
-import { PTOActivity } from '../../types/PTOActivity'
-import { SprintConfiguration } from '../../types/SprintConfiguration'
+import CurrentConfigurationSummary from '@/app/components/sidebar/CurrentConfigurationSummary'
+import ConfigurationManager from '@/app/components/sidebar/ConfigurationManager'
+import SprintCapacityOutput from '@/app/components/sidebar/SprintCapacityOutput'
+import { PTOActivity } from '@/app/types/PTOActivity'
+import { SprintConfiguration } from '@/app/types/SprintConfiguration'
 
 interface SidebarProps {
   // Current config values

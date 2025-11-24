@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from './Button'
-import FormField from './FormField'
+import Button from '@/app/components/ui/Button'
+import FormField from '@/app/components/ui/FormField'
 
 interface QuickSelectOption {
   value: number

@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Button from '../ui/Button'
-import CounterControls from '../ui/CounterControls'
-import FormField from '../ui/FormField'
-import Modal from '../ui/Modal'
-import { PTOActivity } from '../../types/PTOActivity'
+import Button from '@/app/components/ui/Button'
+import CounterControls from '@/app/components/ui/CounterControls'
+import FormField from '@/app/components/ui/FormField'
+import Modal from '@/app/components/ui/Modal'
+import { PTOActivity } from '@/app/types/PTOActivity'
 
 interface PTOActivityWizardProps {
   isOpen: boolean

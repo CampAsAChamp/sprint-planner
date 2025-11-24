@@ -2,16 +2,16 @@
 
 import { useState } from 'react'
 
-import Footer from './components/layout/Footer'
-import PageHeader from './components/layout/PageHeader'
-import PTOActivityWizard from './components/pto_activity/PTOActivityWizard'
-import SprintPlannerForm from './components/sprint/SprintPlannerForm'
-import Sidebar from './components/sidebar/Sidebar'
-import ThemeToggle from './components/ui/ThemeToggle'
-import Toast from './components/ui/Toast'
-import { PTOActivity } from './types/PTOActivity'
-import { useAnimationState } from './hooks/useAnimationState'
-import { useSprintConfiguration } from './hooks/useSprintConfiguration'
+import Footer from '@/app/components/layout/Footer'
+import PageHeader from '@/app/components/layout/PageHeader'
+import PTOActivityWizard from '@/app/components/pto_activity/PTOActivityWizard'
+import SprintPlannerForm from '@/app/components/sprint/SprintPlannerForm'
+import Sidebar from '@/app/components/sidebar/Sidebar'
+import ThemeToggle from '@/app/components/ui/ThemeToggle'
+import Toast from '@/app/components/ui/Toast'
+import { PTOActivity } from '@/app/types/PTOActivity'
+import { useAnimationState } from '@/app/hooks/useAnimationState'
+import { useSprintConfiguration } from '@/app/hooks/useSprintConfiguration'
 
 export default function Home() {
   const {
