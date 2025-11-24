@@ -71,30 +71,37 @@ export default function ConfigurationManager({
         />
 
 
-        {/* Save Button */}
+        {/* Action Buttons */}
         <div className="mt-4">
-          <Button
-            onClick={manager.openSaveModal}
-            variant="primary"
-            size="md"
-            fullWidth
-            icon="save"
-          >
-            Save Configuration
-          </Button>
-        </div>
-
-        {/* Import Button */}
-        <div className="mt-6">
-          <Button
-            onClick={handleImportClick}
-            variant="secondary"
-            size="md"
-            fullWidth
-            icon="upload"
-          >
-            Import Configuration
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={manager.openSaveModal}
+              variant="primary"
+              size="md"
+              fullWidth
+              icon="save"
+            >
+              Save
+            </Button>
+            <Button
+              onClick={handleImportClick}
+              variant="secondary"
+              size="md"
+              fullWidth
+              icon="upload"
+            >
+              Import
+            </Button>
+            <Button
+              onClick={manager.handleExportConfiguration}
+              variant="secondary"
+              size="md"
+              fullWidth
+              icon="download"
+            >
+              Export
+            </Button>
+          </div>
           <input
             ref={fileInputRef}
             type="file"
@@ -102,19 +109,6 @@ export default function ConfigurationManager({
             onChange={manager.handleImportConfiguration}
             className="hidden"
           />
-        </div>
-        
-        {/* Export Button */}
-        <div className="mt-4">
-          <Button
-            onClick={manager.handleExportConfiguration}
-            variant="secondary"
-            size="md"
-            fullWidth
-            icon="download"
-          >
-            Export Configuration
-          </Button>
           
           <div className="mt-4 text-xs text-gray-700 dark:text-gray-500 text-left">
             <p>Saves configuration to localStorage for backup and reuse purposes.</p>
