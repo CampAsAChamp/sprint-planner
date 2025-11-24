@@ -33,7 +33,7 @@ export default function Home() {
   const [editingPtoActivity, setEditingPtoActivity] = useState<PTOActivity | null>(null)
   
   // Animation states for inputs
-  const teamMembersAnimation = useAnimationState(config.teamMembers, { trackDirection: false })
+  const teamMembersAnimation = useAnimationState(config.teamMembers)
   const sprintDaysAnimation = useAnimationState(config.sprintDays)
   const onCallTimeAnimation = useAnimationState(config.onCallTime)
   const rolloverPointsAnimation = useAnimationState(config.rolloverPoints)

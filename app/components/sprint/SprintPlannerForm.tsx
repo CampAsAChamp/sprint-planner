@@ -21,7 +21,7 @@ interface SprintConfiguration {
 interface SprintPlannerFormProps {
   config: SprintConfiguration
   updateConfig: (updates: Partial<SprintConfiguration>) => void
-  teamMembersAnimation: { animating: boolean }
+  teamMembersAnimation: AnimationState
   sprintDaysAnimation: AnimationState
   rolloverPointsAnimation: AnimationState
   onCallTimeAnimation: AnimationState
@@ -45,14 +45,31 @@ export default function SprintPlannerForm({
     <div className="lg:col-span-3">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-gray-200 dark:border-gray-700 px-3 sm:px-6 md:px-8 lg:px-10 pt-4 sm:pt-6 md:pt-8 pb-2 overflow-hidden">
         {/* Team Members Input */}
-        <NumberInput
+        <ControlledNumberInput
           id="teamMembers"
           label="Developers"
           description="How many developers are working on this sprint?"
           value={config.teamMembers}
           min={1}
-          onChange={(value) => updateConfig({ teamMembers: value })}
+          onChange={(value) => {
+            teamMembersAnimation.setLastAction(value > config.teamMembers ? 'increase' : 'decrease')
+            updateConfig({ teamMembers: value })
+          }}
+          quickSelectOptions={[
+            { value: 3, label: '3 Devs', ariaLabel: 'Set developers to 3' },
+            { value: 5, label: '5 Devs', ariaLabel: 'Set developers to 5' },
+            { value: 10, label: '10 Devs', ariaLabel: 'Set developers to 10' }
+          ]}
           animating={teamMembersAnimation.animating}
+          lastAction={teamMembersAnimation.lastAction}
+          onIncrease={() => {
+            teamMembersAnimation.setLastAction('increase')
+            updateConfig({ teamMembers: config.teamMembers + 1 })
+          }}
+          onDecrease={() => {
+            teamMembersAnimation.setLastAction('decrease')
+            updateConfig({ teamMembers: Math.max(1, config.teamMembers - 1) })
+          }}
         />
 
         <Divider />
