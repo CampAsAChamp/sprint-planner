@@ -1,8 +1,8 @@
 'use client'
 
-import Modal from '../ui/Modal'
-import Button from '../ui/Button'
-import { SprintConfiguration } from '../../types/SprintConfiguration'
+import Modal from '../../ui/Modal'
+import Button from '../../ui/Button'
+import { SprintConfiguration } from '../../../types/SprintConfiguration'
 
 interface DeleteConfigurationModalProps {
   isOpen: boolean

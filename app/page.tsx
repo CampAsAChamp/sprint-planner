@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import Footer from './components/layout/Footer'
 import PageHeader from './components/layout/PageHeader'
-import PTOActivityWizard from './components/pto/PTOActivityWizard'
+import PTOActivityWizard from './components/pto_activity/PTOActivityWizard'
 import SprintPlannerForm from './components/sprint/SprintPlannerForm'
 import Sidebar from './components/sidebar/Sidebar'
 import ThemeToggle from './components/ui/ThemeToggle'

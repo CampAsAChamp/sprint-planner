@@ -1,10 +1,10 @@
 'use client'
 
-import Modal from '../ui/Modal'
-import Button from '../ui/Button'
-import FormField from '../ui/FormField'
-import ConfigurationPreview from './ConfigurationPreview'
-import { SprintConfiguration } from '../../types/SprintConfiguration'
+import Modal from '../../ui/Modal'
+import Button from '../../ui/Button'
+import FormField from '../../ui/FormField'
+import ConfigurationPreview from '../ConfigurationPreview'
+import { SprintConfiguration } from '../../../types/SprintConfiguration'
 
 interface SaveConfigurationModalProps {
   isOpen: boolean

@@ -10,24 +10,24 @@ interface PTOActivity {
   duration: number
 }
 
-interface ActivityItemProps {
-  activity: PTOActivity
+interface PtoActivityItemProps {
+  ptoActivity: PTOActivity
   onRemove: (id: string) => void
   onEdit: (id: string) => void
 }
 
-export default function ActivityItem({ activity, onRemove, onEdit }: ActivityItemProps) {
+export default function PtoActivityItem({ ptoActivity, onRemove, onEdit }: PtoActivityItemProps) {
   return (
     <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 flex items-center justify-between min-w-0 max-w-md">
       <div className="text-left min-w-0 flex-1 mr-3">
-        <h4 className="font-medium text-gray-900 dark:text-white text-left truncate">{activity.name}</h4>
+        <h4 className="font-medium text-gray-900 dark:text-white text-left truncate">{ptoActivity.name}</h4>
         <p className="text-sm text-gray-500 dark:text-gray-400 text-left">
-          {activity.developers} dev{getPluralSuffix(activity.developers)} • {activity.duration} day{getPluralSuffix(activity.duration)}
+          {ptoActivity.developers} dev{getPluralSuffix(ptoActivity.developers)} • {ptoActivity.duration} day{getPluralSuffix(ptoActivity.duration)}
         </p>
       </div>
       <div className="flex items-center gap-0.5 flex-shrink-0">
         <Button
-          onClick={() => onEdit(activity.id)}
+          onClick={() => onEdit(ptoActivity.id)}
           variant="ghost"
           size="sm"
           className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:ring-2 hover:ring-blue-500 w-11 h-11 p-1"
@@ -38,7 +38,7 @@ export default function ActivityItem({ activity, onRemove, onEdit }: ActivityIte
           </svg>
         </Button>
         <Button
-          onClick={() => onRemove(activity.id)}
+          onClick={() => onRemove(ptoActivity.id)}
           variant="ghost"
           size="sm"
           icon="delete"

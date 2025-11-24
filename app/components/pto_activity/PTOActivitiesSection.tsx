@@ -1,5 +1,5 @@
 import React from 'react'
-import ActivityItem from './ActivityItem'
+import PtoActivityItem from './PTOActivityItem'
 import Button from '../ui/Button'
 import { PTOActivity } from '../../types/PTOActivity'
 
@@ -43,8 +43,8 @@ export default function PTOActivitiesSection({
         <div className="mt-6 flex flex-wrap gap-3">
           {ptoActivities.map((activity) => (
             <div key={activity.id} className="flex-shrink-0 min-w-0">
-              <ActivityItem
-                activity={activity}
+              <PtoActivityItem
+                ptoActivity={activity}
                 onRemove={onRemoveActivity}
                 onEdit={onEditActivity}
               />
