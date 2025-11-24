@@ -8,19 +8,7 @@ import EditConfigurationModal from '../configuration/EditConfigurationModal'
 import DuplicateConfigurationModal from '../configuration/DuplicateConfigurationModal'
 import DeleteConfigurationModal from '../configuration/DeleteConfigurationModal'
 import { useConfigurationManager } from '../../hooks/useConfigurationManager'
-import { PTOActivity } from '../../types/PTOActivity'
-
-interface SprintConfiguration {
-  id: string
-  name: string
-  teamMembers: number
-  sprintDays: number
-  onCallTime: number
-  rolloverPoints: number
-  ptoActivities: PTOActivity[]
-  createdAt: string
-  updatedAt: string
-}
+import { SprintConfiguration } from '../../types/SprintConfiguration'
 
 interface ConfigurationManagerProps {
   configurations: SprintConfiguration[]

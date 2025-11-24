@@ -2,18 +2,7 @@ import CurrentConfigurationSummary from './CurrentConfigurationSummary'
 import ConfigurationManager from './ConfigurationManager'
 import SprintCapacityOutput from './SprintCapacityOutput'
 import { PTOActivity } from '../../types/PTOActivity'
-
-interface SprintConfiguration {
-  id: string
-  name: string
-  teamMembers: number
-  sprintDays: number
-  onCallTime: number
-  rolloverPoints: number
-  ptoActivities: PTOActivity[]
-  createdAt: string
-  updatedAt: string
-}
+import { SprintConfiguration } from '../../types/SprintConfiguration'
 
 interface SidebarProps {
   // Current config values
