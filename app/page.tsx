@@ -6,7 +6,7 @@ import Footer from './components/layout/Footer'
 import PageHeader from './components/layout/PageHeader'
 import PTOActivityWizard from './components/pto/PTOActivityWizard'
 import SprintPlannerForm from './components/sprint/SprintPlannerForm'
-import SprintPlannerSidebar from './components/sprint/SprintPlannerSidebar'
+import Sidebar from './components/sidebar/Sidebar'
 import ThemeToggle from './components/ui/ThemeToggle'
 import Toast from './components/ui/Toast'
 import { PTOActivity } from './types/PTOActivity'
@@ -95,7 +95,7 @@ export default function Home() {
               })}
             />
 
-            <SprintPlannerSidebar
+            <Sidebar
               teamMembers={config.teamMembers}
               sprintDays={config.sprintDays}
               rolloverPoints={config.rolloverPoints}

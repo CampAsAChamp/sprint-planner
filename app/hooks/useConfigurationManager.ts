@@ -177,6 +177,86 @@ export function useConfigurationManager({
     }
   }
 
+  const handleExportConfiguration = () => {
+    try {
+      const exportData = {
+        version: '1.0',
+        configuration: currentConfig,
+        exportedAt: new Date().toISOString()
+      }
+      
+      const dataStr = JSON.stringify(exportData, null, 2)
+      const dataBlob = new Blob([dataStr], { type: 'application/json' })
+      
+      const url = URL.createObjectURL(dataBlob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${currentConfig.name.replace(/[^a-z0-9]/gi, '_')}_config.json`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+      
+      onShowToast(`Configuration "${currentConfig.name}" exported successfully!`, 'save')
+    } catch (error) {
+      console.error('Failed to export configuration:', error)
+      onShowToast('Failed to export configuration. Please try again.', 'error')
+    }
+  }
+
+  const handleImportConfiguration = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string
+        const importData = JSON.parse(content)
+        
+        // Validate the imported data structure
+        if (!importData.configuration || !importData.configuration.name) {
+          onShowToast('Invalid configuration file format.', 'error')
+          return
+        }
+        
+        const config = importData.configuration
+        
+        // Create a new configuration with the imported data
+        const configData = {
+          teamMembers: config.teamMembers,
+          sprintDays: config.sprintDays,
+          onCallTime: config.onCallTime,
+          rolloverPoints: config.rolloverPoints || 0,
+          ptoActivities: config.ptoActivities || []
+        }
+        
+        // Check if a configuration with the same name already exists
+        const existingConfig = configurations.find(c => c.name === config.name)
+        let finalName = config.name
+        
+        if (existingConfig) {
+          finalName = `${config.name} (Imported)`
+        }
+        
+        onCreateConfiguration(finalName, configData)
+        onShowToast(`Configuration "${finalName}" imported successfully!`, 'load')
+      } catch (error) {
+        console.error('Failed to import configuration:', error)
+        onShowToast('Failed to import configuration. Please check the file format.', 'error')
+      }
+    }
+    
+    reader.onerror = () => {
+      onShowToast('Failed to read the file. Please try again.', 'error')
+    }
+    
+    reader.readAsText(file)
+    
+    // Reset the input value so the same file can be imported again
+    event.target.value = ''
+  }
+
   return {
     // Modal states
     showCreateModal,
@@ -227,7 +307,9 @@ export function useConfigurationManager({
     handleUpdateExistingConfiguration,
     handleUpdateConfigurationName,
     handleDuplicateConfiguration,
-    handleDeleteConfiguration
+    handleDeleteConfiguration,
+    handleExportConfiguration,
+    handleImportConfiguration
   }
 }
 

@@ -1,5 +1,5 @@
-import CurrentConfigurationSummary from '../configuration/CurrentConfigurationSummary'
-import SaveConfiguration from '../configuration/SaveConfiguration'
+import CurrentConfigurationSummary from './CurrentConfigurationSummary'
+import ConfigurationManager from './ConfigurationManager'
 import SprintCapacityOutput from './SprintCapacityOutput'
 import { PTOActivity } from '../../types/PTOActivity'
 
@@ -15,7 +15,7 @@ interface SprintConfiguration {
   updatedAt: string
 }
 
-interface SprintPlannerSidebarProps {
+interface SidebarProps {
   // Current config values
   teamMembers: number
   sprintDays: number
@@ -35,7 +35,7 @@ interface SprintPlannerSidebarProps {
   onShowToast: (message: string, type: 'success' | 'error' | 'save' | 'load' | 'delete') => void
 }
 
-export default function SprintPlannerSidebar({
+export default function Sidebar({
   teamMembers,
   sprintDays,
   rolloverPoints,
@@ -50,7 +50,7 @@ export default function SprintPlannerSidebar({
   onDeleteConfiguration,
   onSwitchToConfiguration,
   onShowToast
-}: SprintPlannerSidebarProps) {
+}: SidebarProps) {
   return (
     <div className="lg:col-span-2">
       <CurrentConfigurationSummary
@@ -70,7 +70,7 @@ export default function SprintPlannerSidebar({
         rolloverPoints={rolloverPoints}
       />
       
-      <SaveConfiguration
+      <ConfigurationManager
         configurations={configurations}
         currentConfigId={currentConfigId}
         currentConfig={currentConfig}
@@ -84,4 +84,5 @@ export default function SprintPlannerSidebar({
     </div>
   )
 }
+
 

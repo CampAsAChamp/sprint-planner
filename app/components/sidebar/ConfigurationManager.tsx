@@ -1,11 +1,12 @@
 'use client'
 
+import { useRef } from 'react'
 import Button from '../ui/Button'
-import ConfigurationDropdown from './ConfigurationDropdown'
-import SaveConfigurationModal from './SaveConfigurationModal'
-import EditConfigurationModal from './EditConfigurationModal'
-import DuplicateConfigurationModal from './DuplicateConfigurationModal'
-import DeleteConfigurationModal from './DeleteConfigurationModal'
+import ConfigurationDropdown from '../configuration/ConfigurationDropdown'
+import SaveConfigurationModal from '../configuration/SaveConfigurationModal'
+import EditConfigurationModal from '../configuration/EditConfigurationModal'
+import DuplicateConfigurationModal from '../configuration/DuplicateConfigurationModal'
+import DeleteConfigurationModal from '../configuration/DeleteConfigurationModal'
 import { useConfigurationManager } from '../../hooks/useConfigurationManager'
 import { PTOActivity } from '../../types/PTOActivity'
 
@@ -54,6 +55,12 @@ export default function ConfigurationManager({
     onShowToast
   })
 
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click()
+  }
+
   return (
     <div className="bg-orange-100 dark:bg-orange-500/20 border border-orange-400 dark:border-orange-600 rounded-lg p-6 mt-6">
       <h3 className="text-xl font-medium text-orange-700 dark:text-orange-200 mb-4">
@@ -75,8 +82,9 @@ export default function ConfigurationManager({
           onDeleteConfiguration={manager.openDeleteModal}
         />
 
+
         {/* Save Button */}
-        <div className="mt-6">
+        <div className="mt-4">
           <Button
             onClick={manager.openSaveModal}
             variant="primary"
@@ -86,10 +94,44 @@ export default function ConfigurationManager({
           >
             Save Configuration
           </Button>
+        </div>
+
+        {/* Import Button */}
+        <div className="mt-6">
+          <Button
+            onClick={handleImportClick}
+            variant="secondary"
+            size="md"
+            fullWidth
+            icon="upload"
+          >
+            Import Configuration
+          </Button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            onChange={manager.handleImportConfiguration}
+            className="hidden"
+          />
+        </div>
+        
+        {/* Export Button */}
+        <div className="mt-4">
+          <Button
+            onClick={manager.handleExportConfiguration}
+            variant="secondary"
+            size="md"
+            fullWidth
+            icon="download"
+          >
+            Export Configuration
+          </Button>
           
           <div className="mt-4 text-xs text-gray-700 dark:text-gray-500 text-left">
-            <p>Saves configuration to localStorage for backup purposes.</p>
+            <p>Saves configuration to localStorage for backup and reuse purposes.</p>
             <p className="mt-1">Configuration is automatically loaded from localStorage on page load.</p>
+            <p className="mt-2">Use Export to download configuration as a file, or Import to load from a file.</p>
           </div>
         </div>
       </div>
@@ -147,3 +189,4 @@ export default function ConfigurationManager({
     </div>
   )
 }
+

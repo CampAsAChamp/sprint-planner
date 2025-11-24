@@ -11,7 +11,7 @@ interface ButtonProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
   disabled?: boolean
   className?: string
-  icon?: 'plus' | 'minus' | 'delete' | 'reload' | 'close' | 'check' | 'error' | 'save' | 'load' | 'trash'
+  icon?: 'plus' | 'minus' | 'delete' | 'reload' | 'close' | 'check' | 'error' | 'save' | 'load' | 'trash' | 'download' | 'upload'
   iconPosition?: 'left' | 'right'
   fullWidth?: boolean
   ariaLabel?: string
