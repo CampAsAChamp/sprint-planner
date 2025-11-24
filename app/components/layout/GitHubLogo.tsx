@@ -12,7 +12,7 @@ export default function GitHubLogo({ className = '' }: GitHubLogoProps) {
       href="https://github.com/campasachamp/sprint-planner"
       target="_blank"
       rel="noopener noreferrer"
-      className={`fixed bottom-4 right-4 z-50 opacity-60 hover:opacity-100 transition-opacity duration-200 ${className}`}
+      className={`inline-block opacity-60 hover:opacity-100 transition-opacity duration-200 ${className}`}
       aria-label="View source code on GitHub"
     >
       <svg

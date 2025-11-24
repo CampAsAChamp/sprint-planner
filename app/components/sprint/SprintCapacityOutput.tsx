@@ -96,20 +96,36 @@ export default function SprintCapacityOutput({
 
   return (
     <div className={`rounded-lg p-4 sm:p-6 lg:p-8 mt-6 transition-all duration-200 ${getContainerClasses()}`}>
-      <h3 className={`text-xl sm:text-2xl lg:text-3xl font-medium mb-4 sm:mb-6 lg:mb-8 transition-colors duration-200 ${getTitleClasses()}`} style={{textAlign: 'center'}}>
+      <h3 className={`text-xl font-medium mb-4 transition-colors duration-200 ${getTitleClasses()}`} style={{textAlign: 'center'}}>
         Sprint Capacity
       </h3>
       <div className="text-center">
-        <div className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 transition-colors duration-200 ${getCapacityClasses()}`}>
+        <output className={`text-2xl sm:text-3xl lg:text-3xl font-bold mb-4 transition-colors duration-200 ${getCapacityClasses()}`}>
           {currentCapacity.toFixed(1)} Points
-        </div>
+        </output>
         
         {/* Breakdown Section */}
-        <div className="mt-6 pt-4 border-t border-green-300 dark:border-green-700">
-          <div className="space-y-2 text-sm sm:text-base">
+        <div className="mt-6 pt-3 border-t border-green-300 dark:border-green-700">
+          <div className="space-y-3 text-sm sm:text-base">
             <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
-              <span className="font-medium">Base Capacity</span>
-              <span className="font-semibold">{teamMembers} dev{teamMembers !== 1 ? 's' : ''} × {sprintDays} day{sprintDays !== 1 ? 's' : ''} = {baseCapacity.toFixed(1)}</span>
+              <span className="font-medium flex items-center gap-1">
+                Base Capacity
+                <span className="relative group">
+                  <svg 
+                    className="w-4 h-4 text-gray-500 dark:text-gray-400 cursor-help" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="12" cy="12" r="10" strokeWidth="2"/>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 16v-4m0-4h.01"/>
+                  </svg>
+                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                    {teamMembers} dev{teamMembers !== 1 ? 's' : ''} × {sprintDays} day{sprintDays !== 1 ? 's' : ''} = {baseCapacity.toFixed(1)}
+                  </span>
+                </span>
+              </span>
+              <span className="font-semibold">{baseCapacity.toFixed(1)}</span>
             </div>
             {rolloverPoints > 0 && (
               <div className="flex justify-between items-center text-gray-700 dark:text-gray-300">
@@ -131,7 +147,7 @@ export default function SprintCapacityOutput({
             )}
             {rolloverPoints > 0 && (
               <>
-                <div className="flex justify-between items-center pt-2 border-t border-green-200 dark:border-green-800">
+                <div className="flex justify-between items-center mt-4 pt-4 border-t border-green-200 dark:border-green-800">
                   <span className="font-bold text-gray-900 dark:text-white">New Points (excluding on-call)</span>
                   <span className="font-bold text-gray-900 dark:text-white">
                     {newPoints.toFixed(1)}
@@ -145,7 +161,7 @@ export default function SprintCapacityOutput({
                 </div>
               </>
             )}
-            <div className="flex justify-between items-center pt-2 border-t border-green-200 dark:border-green-800">
+            <div className="flex justify-between items-center mt-4 pt-4 border-t border-green-200 dark:border-green-800">
               <span className="font-bold text-gray-900 dark:text-white flex items-center gap-1">
                 Total Capacity
                 <span className="relative group">
