@@ -1,41 +1,140 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
-  <!-- Background circle with vibrant blue/teal gradient -->
-  <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Circular background -->
-  <circle cx="60" cy="60" r="60" fill="url(#bgGradient)"/>
-  
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 120 120"
+   width="120"
+   height="120"
+   version="1.1"
+   id="svg16"
+   sodipodi:docname="icon0.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs16" />
+  <sodipodi:namedview
+     id="namedview16"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="3.5515789"
+     inkscape:cx="45.191168"
+     inkscape:cy="68.561055"
+     inkscape:window-width="1459"
+     inkscape:window-height="916"
+     inkscape:window-x="53"
+     inkscape:window-y="38"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg16" />
   <!-- Calendar body -->
-  <rect x="30" y="35" width="60" height="55" rx="6" fill="white"/>
-  
+  <rect
+     x="15"
+     y="15"
+     width="90"
+     height="82.5"
+     rx="9"
+     fill="white"
+     id="rect1" />
   <!-- Calendar header (top colored bar) -->
-  <rect x="30" y="35" width="60" height="16" rx="6" fill="#1e40af"/>
-  <rect x="30" y="43" width="60" height="8" fill="#1e40af"/>
-  
+  <rect
+     x="15"
+     y="15"
+     width="90"
+     height="24"
+     rx="9"
+     fill="#1e40af"
+     id="rect2" />
+  <rect
+     x="15"
+     y="27"
+     width="90"
+     height="12"
+     fill="#1e40af"
+     id="rect3" />
   <!-- Binding rings -->
-  <circle cx="42" cy="35" r="3" fill="white"/>
-  <circle cx="60" cy="35" r="3" fill="white"/>
-  <circle cx="78" cy="35" r="3" fill="white"/>
-  
+  <circle
+     cx="33"
+     cy="15"
+     r="4.5"
+     fill="white"
+     id="circle3" />
+  <circle
+     cx="60"
+     cy="15"
+     r="4.5"
+     fill="white"
+     id="circle4" />
+  <circle
+     cx="87"
+     cy="15"
+     r="4.5"
+     fill="white"
+     id="circle5" />
   <!-- Calendar grid dots/dates -->
-  <circle cx="42" cy="60" r="2.5" fill="#6b7280"/>
-  <circle cx="54" cy="60" r="2.5" fill="#6b7280"/>
-  <circle cx="66" cy="60" r="2.5" fill="#6b7280"/>
-  <circle cx="78" cy="60" r="2.5" fill="#6b7280"/>
-  
-  <circle cx="42" cy="70" r="2.5" fill="#6b7280"/>
-  <circle cx="54" cy="70" r="2.5" fill="#6b7280"/>
-  <circle cx="66" cy="70" r="2.5" fill="#6b7280"/>
-  <circle cx="78" cy="70" r="2.5" fill="#6b7280"/>
-  
-  <circle cx="42" cy="80" r="2.5" fill="#6b7280"/>
-  <circle cx="54" cy="80" r="2.5" fill="#6b7280"/>
-  
+  <circle
+     cx="51"
+     cy="55"
+     r="3.75"
+     fill="#6b7280"
+     id="circle7" />
+  <circle
+     cx="69"
+     cy="55"
+     r="3.75"
+     fill="#6b7280"
+     id="circle8" />
+  <circle
+     cx="87"
+     cy="55"
+     r="3.75"
+     fill="#6b7280"
+     id="circle9" />
+  <circle
+     cx="33"
+     cy="70"
+     r="3.75"
+     fill="#6b7280"
+     id="circle10" />
+  <circle
+     cx="51"
+     cy="70"
+     r="3.75"
+     fill="#6b7280"
+     id="circle11" />
+  <circle
+     cx="69"
+     cy="70"
+     r="3.75"
+     fill="#6b7280"
+     id="circle12" />
+  <circle
+     cx="87"
+     cy="70"
+     r="3.75"
+     fill="#6b7280"
+     id="circle13" />
+  <circle
+     cx="33"
+     cy="85"
+     r="3.75"
+     fill="#6b7280"
+     id="circle14" />
+  <circle
+     cx="51"
+     cy="85"
+     r="3.75"
+     fill="#6b7280"
+     id="circle15" />
   <!-- Highlighted current day -->
-  <circle cx="66" cy="80" r="5" fill="#3b82f6"/>
+  <circle
+     cx="69"
+     cy="85"
+     r="7.5"
+     fill="#3b82f6"
+     id="circle16" />
 </svg>
